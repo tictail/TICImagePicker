@@ -1,0 +1,527 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		334950451B2B144600A585F7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 334950441B2B144600A585F7 /* main.m */; };
+		334950481B2B144600A585F7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 334950471B2B144600A585F7 /* AppDelegate.m */; };
+		3349504B1B2B144600A585F7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3349504A1B2B144600A585F7 /* ViewController.m */; };
+		3349504E1B2B144600A585F7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3349504C1B2B144600A585F7 /* Main.storyboard */; };
+		334950501B2B144600A585F7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3349504F1B2B144600A585F7 /* Images.xcassets */; };
+		334950531B2B144600A585F7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 334950511B2B144600A585F7 /* LaunchScreen.xib */; };
+		3349505F1B2B144600A585F7 /* TICImagePickerExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3349505E1B2B144600A585F7 /* TICImagePickerExampleTests.m */; };
+		3349507B1B2B14B100A585F7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3349506A1B2B14B100A585F7 /* Localizable.strings */; };
+		3349507C1B2B14B100A585F7 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 3349506C1B2B14B100A585F7 /* Localizable.stringsdict */; };
+		3349507D1B2B14B100A585F7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3349506E1B2B14B100A585F7 /* Images.xcassets */; };
+		3349507E1B2B14B100A585F7 /* TICAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 334950701B2B14B100A585F7 /* TICAlbumCell.m */; };
+		3349507F1B2B14B100A585F7 /* TICAlbumsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 334950721B2B14B100A585F7 /* TICAlbumsViewController.m */; };
+		334950801B2B14B100A585F7 /* TICAssetGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 334950741B2B14B100A585F7 /* TICAssetGridViewCell.m */; };
+		334950811B2B14B100A585F7 /* TICAssetGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 334950761B2B14B100A585F7 /* TICAssetGridViewController.m */; };
+		334950821B2B14B100A585F7 /* TICCameraGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 334950781B2B14B100A585F7 /* TICCameraGridViewCell.m */; };
+		334950831B2B14B100A585F7 /* TICImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3349507A1B2B14B100A585F7 /* TICImagePickerController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		334950591B2B144600A585F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 334950371B2B144600A585F7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3349503E1B2B144600A585F7;
+			remoteInfo = TICImagePickerExample;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3349503F1B2B144600A585F7 /* TICImagePickerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TICImagePickerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		334950431B2B144600A585F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		334950441B2B144600A585F7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		334950461B2B144600A585F7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		334950471B2B144600A585F7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		334950491B2B144600A585F7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		3349504A1B2B144600A585F7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		3349504D1B2B144600A585F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3349504F1B2B144600A585F7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		334950521B2B144600A585F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		334950581B2B144600A585F7 /* TICImagePickerExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TICImagePickerExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3349505D1B2B144600A585F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3349505E1B2B144600A585F7 /* TICImagePickerExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TICImagePickerExampleTests.m; sourceTree = "<group>"; };
+		3349506B1B2B14B100A585F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3349506D1B2B14B100A585F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		3349506E1B2B14B100A585F7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		3349506F1B2B14B100A585F7 /* TICAlbumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICAlbumCell.h; sourceTree = "<group>"; };
+		334950701B2B14B100A585F7 /* TICAlbumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICAlbumCell.m; sourceTree = "<group>"; };
+		334950711B2B14B100A585F7 /* TICAlbumsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICAlbumsViewController.h; sourceTree = "<group>"; };
+		334950721B2B14B100A585F7 /* TICAlbumsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICAlbumsViewController.m; sourceTree = "<group>"; };
+		334950731B2B14B100A585F7 /* TICAssetGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICAssetGridViewCell.h; sourceTree = "<group>"; };
+		334950741B2B14B100A585F7 /* TICAssetGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICAssetGridViewCell.m; sourceTree = "<group>"; };
+		334950751B2B14B100A585F7 /* TICAssetGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICAssetGridViewController.h; sourceTree = "<group>"; };
+		334950761B2B14B100A585F7 /* TICAssetGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICAssetGridViewController.m; sourceTree = "<group>"; };
+		334950771B2B14B100A585F7 /* TICCameraGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICCameraGridViewCell.h; sourceTree = "<group>"; };
+		334950781B2B14B100A585F7 /* TICCameraGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICCameraGridViewCell.m; sourceTree = "<group>"; };
+		334950791B2B14B100A585F7 /* TICImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICImagePickerController.h; sourceTree = "<group>"; };
+		3349507A1B2B14B100A585F7 /* TICImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICImagePickerController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3349503C1B2B144600A585F7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		334950551B2B144600A585F7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		334950361B2B144600A585F7 = {
+			isa = PBXGroup;
+			children = (
+				334950681B2B14B100A585F7 /* TICImagePicker */,
+				334950411B2B144600A585F7 /* TICImagePickerExample */,
+				3349505B1B2B144600A585F7 /* TICImagePickerExampleTests */,
+				334950401B2B144600A585F7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		334950401B2B144600A585F7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3349503F1B2B144600A585F7 /* TICImagePickerExample.app */,
+				334950581B2B144600A585F7 /* TICImagePickerExampleTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		334950411B2B144600A585F7 /* TICImagePickerExample */ = {
+			isa = PBXGroup;
+			children = (
+				334950461B2B144600A585F7 /* AppDelegate.h */,
+				334950471B2B144600A585F7 /* AppDelegate.m */,
+				334950491B2B144600A585F7 /* ViewController.h */,
+				3349504A1B2B144600A585F7 /* ViewController.m */,
+				3349504C1B2B144600A585F7 /* Main.storyboard */,
+				3349504F1B2B144600A585F7 /* Images.xcassets */,
+				334950511B2B144600A585F7 /* LaunchScreen.xib */,
+				334950421B2B144600A585F7 /* Supporting Files */,
+			);
+			path = TICImagePickerExample;
+			sourceTree = "<group>";
+		};
+		334950421B2B144600A585F7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				334950431B2B144600A585F7 /* Info.plist */,
+				334950441B2B144600A585F7 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3349505B1B2B144600A585F7 /* TICImagePickerExampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				3349505E1B2B144600A585F7 /* TICImagePickerExampleTests.m */,
+				3349505C1B2B144600A585F7 /* Supporting Files */,
+			);
+			path = TICImagePickerExampleTests;
+			sourceTree = "<group>";
+		};
+		3349505C1B2B144600A585F7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3349505D1B2B144600A585F7 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		334950681B2B14B100A585F7 /* TICImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				334950791B2B14B100A585F7 /* TICImagePickerController.h */,
+				3349507A1B2B14B100A585F7 /* TICImagePickerController.m */,
+				334950851B2B150600A585F7 /* Album */,
+				334950841B2B150000A585F7 /* Grid */,
+				334950691B2B14B100A585F7 /* Resources */,
+			);
+			path = TICImagePicker;
+			sourceTree = "<group>";
+		};
+		334950691B2B14B100A585F7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3349506A1B2B14B100A585F7 /* Localizable.strings */,
+				3349506C1B2B14B100A585F7 /* Localizable.stringsdict */,
+				3349506E1B2B14B100A585F7 /* Images.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		334950841B2B150000A585F7 /* Grid */ = {
+			isa = PBXGroup;
+			children = (
+				334950731B2B14B100A585F7 /* TICAssetGridViewCell.h */,
+				334950741B2B14B100A585F7 /* TICAssetGridViewCell.m */,
+				334950751B2B14B100A585F7 /* TICAssetGridViewController.h */,
+				334950761B2B14B100A585F7 /* TICAssetGridViewController.m */,
+			);
+			name = Grid;
+			sourceTree = "<group>";
+		};
+		334950851B2B150600A585F7 /* Album */ = {
+			isa = PBXGroup;
+			children = (
+				334950771B2B14B100A585F7 /* TICCameraGridViewCell.h */,
+				334950781B2B14B100A585F7 /* TICCameraGridViewCell.m */,
+				3349506F1B2B14B100A585F7 /* TICAlbumCell.h */,
+				334950701B2B14B100A585F7 /* TICAlbumCell.m */,
+				334950711B2B14B100A585F7 /* TICAlbumsViewController.h */,
+				334950721B2B14B100A585F7 /* TICAlbumsViewController.m */,
+			);
+			name = Album;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3349503E1B2B144600A585F7 /* TICImagePickerExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 334950621B2B144600A585F7 /* Build configuration list for PBXNativeTarget "TICImagePickerExample" */;
+			buildPhases = (
+				3349503B1B2B144600A585F7 /* Sources */,
+				3349503C1B2B144600A585F7 /* Frameworks */,
+				3349503D1B2B144600A585F7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TICImagePickerExample;
+			productName = TICImagePickerExample;
+			productReference = 3349503F1B2B144600A585F7 /* TICImagePickerExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+		334950571B2B144600A585F7 /* TICImagePickerExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 334950651B2B144600A585F7 /* Build configuration list for PBXNativeTarget "TICImagePickerExampleTests" */;
+			buildPhases = (
+				334950541B2B144600A585F7 /* Sources */,
+				334950551B2B144600A585F7 /* Frameworks */,
+				334950561B2B144600A585F7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3349505A1B2B144600A585F7 /* PBXTargetDependency */,
+			);
+			name = TICImagePickerExampleTests;
+			productName = TICImagePickerExampleTests;
+			productReference = 334950581B2B144600A585F7 /* TICImagePickerExampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		334950371B2B144600A585F7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = Tictail;
+				TargetAttributes = {
+					3349503E1B2B144600A585F7 = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
+					334950571B2B144600A585F7 = {
+						CreatedOnToolsVersion = 6.3.2;
+						TestTargetID = 3349503E1B2B144600A585F7;
+					};
+				};
+			};
+			buildConfigurationList = 3349503A1B2B144600A585F7 /* Build configuration list for PBXProject "TICImagePickerExample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 334950361B2B144600A585F7;
+			productRefGroup = 334950401B2B144600A585F7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3349503E1B2B144600A585F7 /* TICImagePickerExample */,
+				334950571B2B144600A585F7 /* TICImagePickerExampleTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3349503D1B2B144600A585F7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3349504E1B2B144600A585F7 /* Main.storyboard in Resources */,
+				3349507B1B2B14B100A585F7 /* Localizable.strings in Resources */,
+				334950531B2B144600A585F7 /* LaunchScreen.xib in Resources */,
+				3349507D1B2B14B100A585F7 /* Images.xcassets in Resources */,
+				3349507C1B2B14B100A585F7 /* Localizable.stringsdict in Resources */,
+				334950501B2B144600A585F7 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		334950561B2B144600A585F7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3349503B1B2B144600A585F7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3349504B1B2B144600A585F7 /* ViewController.m in Sources */,
+				334950481B2B144600A585F7 /* AppDelegate.m in Sources */,
+				334950801B2B14B100A585F7 /* TICAssetGridViewCell.m in Sources */,
+				3349507E1B2B14B100A585F7 /* TICAlbumCell.m in Sources */,
+				334950821B2B14B100A585F7 /* TICCameraGridViewCell.m in Sources */,
+				334950831B2B14B100A585F7 /* TICImagePickerController.m in Sources */,
+				334950811B2B14B100A585F7 /* TICAssetGridViewController.m in Sources */,
+				3349507F1B2B14B100A585F7 /* TICAlbumsViewController.m in Sources */,
+				334950451B2B144600A585F7 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		334950541B2B144600A585F7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3349505F1B2B144600A585F7 /* TICImagePickerExampleTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3349505A1B2B144600A585F7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3349503E1B2B144600A585F7 /* TICImagePickerExample */;
+			targetProxy = 334950591B2B144600A585F7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		3349504C1B2B144600A585F7 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3349504D1B2B144600A585F7 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		334950511B2B144600A585F7 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				334950521B2B144600A585F7 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		3349506A1B2B14B100A585F7 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3349506B1B2B14B100A585F7 /* Base */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		3349506C1B2B14B100A585F7 /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3349506D1B2B14B100A585F7 /* Base */,
+			);
+			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		334950601B2B144600A585F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		334950611B2B144600A585F7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		334950631B2B144600A585F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = TICImagePickerExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		334950641B2B144600A585F7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = TICImagePickerExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		334950661B2B144600A585F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TICImagePickerExampleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TICImagePickerExample.app/TICImagePickerExample";
+			};
+			name = Debug;
+		};
+		334950671B2B144600A585F7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TICImagePickerExampleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TICImagePickerExample.app/TICImagePickerExample";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3349503A1B2B144600A585F7 /* Build configuration list for PBXProject "TICImagePickerExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				334950601B2B144600A585F7 /* Debug */,
+				334950611B2B144600A585F7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		334950621B2B144600A585F7 /* Build configuration list for PBXNativeTarget "TICImagePickerExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				334950631B2B144600A585F7 /* Debug */,
+				334950641B2B144600A585F7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		334950651B2B144600A585F7 /* Build configuration list for PBXNativeTarget "TICImagePickerExampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				334950661B2B144600A585F7 /* Debug */,
+				334950671B2B144600A585F7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 334950371B2B144600A585F7 /* Project object */;
+}
