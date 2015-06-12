@@ -16,10 +16,6 @@
 
 @end
 
-
-static NSString * const AllPhotosReuseIdentifier = @"AllPhotosCell";
-static NSString * const CollectionCellReuseIdentifier = @"CollectionCell";
-
 @implementation TICAlbumsViewController
 
 - (void)dealloc {

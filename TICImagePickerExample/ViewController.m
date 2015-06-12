@@ -19,7 +19,7 @@
 
 + (void)initialize {
   if (self == ViewController.class) {
-    [[TICAssetGridViewCell appearance] setSelectedColor:[[UIColor greenColor] colorWithAlphaComponent:0.4]];
+    [[TICImageGridViewCell appearance] setSelectedColor:[[UIColor greenColor] colorWithAlphaComponent:0.4]];
     [[TICAlbumCell appearance] setTitleLabelFont:[UIFont systemFontOfSize:20]];
   }
 }

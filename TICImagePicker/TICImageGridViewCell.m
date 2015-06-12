@@ -6,13 +6,13 @@
 //  Copyright (c) 2015 Tictail. All rights reserved.
 //
 
-#import "TICAssetGridViewCell.h"
+#import "TICImageGridViewCell.h"
 
-@interface TICAssetGridViewCell ()
+@interface TICImageGridViewCell ()
 @end
 
 
-@implementation TICAssetGridViewCell
+@implementation TICImageGridViewCell
 
 - (id)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {

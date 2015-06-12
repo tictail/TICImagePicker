@@ -9,7 +9,7 @@
 @import UIKit;
 @import Photos;
 
-#import "TICAssetGridViewCell.h"
+#import "TICImageGridViewCell.h"
 #import "TICAlbumCell.h"
 
 

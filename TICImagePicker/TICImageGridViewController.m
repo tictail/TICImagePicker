@@ -6,18 +6,18 @@
 //  Copyright (c) 2015 Tictail. All rights reserved.
 //
 
-#import "TICAssetGridViewController.h"
+#import "TICImageGridViewController.h"
 #import "TICImagePickerController.h"
 #import "TICAlbumsViewController.h"
-#import "TICAssetGridViewCell.h"
+#import "TICImageGridViewCell.h"
 #import "TICCameraGridViewCell.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 @import Photos;
 
-
 //Helper methods
 @implementation NSIndexSet (Convenience)
+
 - (NSArray *)aapl_indexPathsFromIndexesWithSection:(NSUInteger)section {
   NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:self.count];
   [self enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
@@ -25,8 +25,11 @@
   }];
   return indexPaths;
 }
+
 @end
+
 @implementation UICollectionView (Convenience)
+
 - (NSArray *)aapl_indexPathsForElementsInRect:(CGRect)rect {
   NSArray *allLayoutAttributes = [self.collectionViewLayout layoutAttributesForElementsInRect:rect];
   if (allLayoutAttributes.count == 0) { return nil; }
@@ -37,10 +40,11 @@
   }
   return indexPaths;
 }
+
 @end
 
 
-@interface TICAssetGridViewController ()
+@interface TICImageGridViewController ()
 <
 PHPhotoLibraryChangeObserver,
 UINavigationControllerDelegate,
@@ -56,7 +60,7 @@ UIAlertViewDelegate
 
 static CGSize AssetGridThumbnailSize;
 
-@implementation TICAssetGridViewController
+@implementation TICImageGridViewController
 
 - (void)dealloc {
   [self resetCachedAssets];
@@ -75,8 +79,8 @@ static CGSize AssetGridThumbnailSize;
     
     self.collectionView.allowsMultipleSelection = YES;
   
-    [self.collectionView registerClass:[TICAssetGridViewCell class]
-            forCellWithReuseIdentifier:NSStringFromClass([TICAssetGridViewCell class])];
+    [self.collectionView registerClass:[TICImageGridViewCell class]
+            forCellWithReuseIdentifier:NSStringFromClass([TICImageGridViewCell class])];
     [self.collectionView registerClass:[TICCameraGridViewCell class]
             forCellWithReuseIdentifier:NSStringFromClass([TICCameraGridViewCell class])];
   }
@@ -155,7 +159,7 @@ static CGSize AssetGridThumbnailSize;
                                               forIndexPath:indexPath];
     return cameraPreviewCell;
   } else {
-    TICAssetGridViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([TICAssetGridViewCell class])
+    TICImageGridViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([TICImageGridViewCell class])
                                                                            forIndexPath:indexPath];
     
     // Increment the cell's tag

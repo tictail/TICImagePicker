@@ -8,7 +8,8 @@
 
 #import "TICImagePickerController.h"
 #import "TICAlbumsViewController.h"
-#import "TICAssetGridViewController.h"
+#import "TICImageGridViewController.h"
+#import "NSBundle+Tictail.h"
 
 @import Photos;
 
@@ -20,7 +21,7 @@ MHWAlbumsViewController
 >
 
 @property (nonatomic, strong) TICAlbumsViewController *albumsViewController;
-@property (nonatomic, strong) TICAssetGridViewController *assetGridViewController;
+@property (nonatomic, strong) TICImageGridViewController *imageGridViewController;
 
 @property (nonatomic, strong) UIButton *albumPickerButton;
 @property (nonatomic, strong) UIBarButtonItem *titleButtonItem;
@@ -32,7 +33,7 @@ MHWAlbumsViewController
 - (id)init {
   if (self = [super init]) {
     _selectedAssets = [[NSMutableArray alloc] init];
-    
+
     //Default values:
     _shouldDisplaySelectionInfoToolbar = YES;
     _shouldDisplayNumberOfAssetsInAlbum = YES;
@@ -94,7 +95,7 @@ MHWAlbumsViewController
 #pragma mark - Setup Navigation Controller
 
 - (void)setupChildNavigationController {
-  self.childNavigationController = [[UINavigationController alloc] initWithRootViewController:self.assetGridViewController];
+  self.childNavigationController = [[UINavigationController alloc] initWithRootViewController:self.imageGridViewController];
   self.childNavigationController.delegate = self;
   
   [self.childNavigationController willMoveToParentViewController:self];
@@ -105,12 +106,12 @@ MHWAlbumsViewController
 }
 
 - (void)setupAssetsGridViewController {
-  [self setupNavigationItem:self.assetGridViewController.navigationItem];
+  [self setupNavigationItem:self.imageGridViewController.navigationItem];
   [self setupToolbar];
   
   PHFetchResult *collectionFetchResult = self.albumsViewController.collectionsFetchResults.firstObject;
   PHAssetCollection *assetCollection = collectionFetchResult.firstObject;
-  [self updateGridViewController:self.assetGridViewController collection:assetCollection];
+  [self updateGridViewController:self.imageGridViewController collection:assetCollection];
 }
 
 - (void)displayAuthorizationError {
@@ -138,7 +139,7 @@ MHWAlbumsViewController
   UIPopoverPresentationController *popover = [self.albumsViewController popoverPresentationController];
   popover.delegate = self;
   
-  UIView *sourceView = self.assetGridViewController.navigationItem.titleView;
+  UIView *sourceView = self.imageGridViewController.navigationItem.titleView;
   popover.sourceView = sourceView;
   popover.sourceRect = sourceView.bounds;
   popover.popoverLayoutMargins = UIEdgeInsetsMake(0, 20, 20, 20); // No-op but in case they fix it
@@ -152,20 +153,20 @@ MHWAlbumsViewController
 
 - (void)albumsViewController:(TICAlbumsViewController *)albumsViewController didSelectCollection:(PHAssetCollection *)assetCollection {
   [self dismissViewControllerAnimated:YES completion:nil];
-  [self updateGridViewController:self.assetGridViewController collection:assetCollection];
+  [self updateGridViewController:self.imageGridViewController collection:assetCollection];
 }
 
 #pragma mark -
 #pragma mark - Asset Grid
 
-- (TICAssetGridViewController *)assetGridViewController {
-  if (!_assetGridViewController) {
-    _assetGridViewController = [[TICAssetGridViewController alloc] initWithPicker:self];
+- (TICImageGridViewController *)imageGridViewController {
+  if (!_imageGridViewController) {
+    _imageGridViewController = [[TICImageGridViewController alloc] initWithPicker:self];
   }
-  return _assetGridViewController;
+  return _imageGridViewController;
 }
 
-- (void)updateGridViewController:(TICAssetGridViewController *)gridViewController collection:(PHAssetCollection *)assetCollection {
+- (void)updateGridViewController:(TICImageGridViewController *)gridViewController collection:(PHAssetCollection *)assetCollection {
   PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:self.assetsFetchOptions];
   gridViewController.assetsFetchResults = assetsFetchResult;
   gridViewController.assetCollection = assetCollection;
@@ -243,12 +244,22 @@ MHWAlbumsViewController
 }
 
 - (void)updateAlbumPickerButtonWithTitle:(NSString *)title {
-  [self.albumPickerButton setTitle:title forState:UIControlStateNormal];
+  // Add some space for the arrow
+  title = [title stringByAppendingString:@" "];
+  NSMutableAttributedString *attributedTitle = [[NSMutableAttributedString alloc] initWithString:title];
+  NSTextAttachment *textAttachment = [NSTextAttachment new];
+  UIImage *image = [UIImage imageNamed:@"TICAlbumPickerArrow"
+                              inBundle:[NSBundle tic_bundle]
+         compatibleWithTraitCollection:nil];
+  textAttachment.image = image;
+  textAttachment.bounds = CGRectMake(0, 0, image.size.width, image.size.height);
+  [attributedTitle appendAttributedString:[NSAttributedString attributedStringWithAttachment:textAttachment]];
+  [self.albumPickerButton setAttributedTitle:attributedTitle forState:UIControlStateNormal];
   [self.albumPickerButton sizeToFit];
 }
 
 - (void)updateDoneButton {
-  self.assetGridViewController.navigationItem.rightBarButtonItem.enabled = (self.selectedAssets.count > 0);
+  self.imageGridViewController.navigationItem.rightBarButtonItem.enabled = (self.selectedAssets.count > 0);
 }
 
 
@@ -256,12 +267,12 @@ MHWAlbumsViewController
 #pragma mark - Toolbar
 
 - (void)setupToolbar {
-  self.assetGridViewController.toolbarItems = self.toolbarItems;
+  self.imageGridViewController.toolbarItems = self.toolbarItems;
 }
 
 - (void)updateToolbar {
   self.titleButtonItem.title = [self toolbarTitle];
-  [self.assetGridViewController.navigationController setToolbarHidden:(self.selectedAssets.count == 0) animated:YES];
+  [self.imageGridViewController.navigationController setToolbarHidden:(self.selectedAssets.count == 0) animated:YES];
 }
 
 - (NSString *)toolbarTitle {

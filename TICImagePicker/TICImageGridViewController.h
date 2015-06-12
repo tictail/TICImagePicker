@@ -13,7 +13,7 @@
 @import Photos;
 
 
-@interface TICAssetGridViewController : UICollectionViewController
+@interface TICImageGridViewController : UICollectionViewController
 
 @property (nonatomic, strong) PHAssetCollection *assetCollection;
 @property (nonatomic, strong) PHFetchResult *assetsFetchResults;

@@ -8,7 +8,7 @@
 
 @import UIKit;
 
-@interface TICAssetGridViewCell : UICollectionViewCell
+@interface TICImageGridViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIView *overlayView;
