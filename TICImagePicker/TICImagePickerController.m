@@ -9,7 +9,6 @@
 #import "TICImagePickerController.h"
 #import "TICAlbumsViewController.h"
 #import "TICImageGridViewController.h"
-#import "NSBundle+Tictail.h"
 
 @import Photos;
 
@@ -17,7 +16,7 @@
 <
 UINavigationControllerDelegate,
 UIPopoverPresentationControllerDelegate,
-MHWAlbumsViewController
+TICAlbumsViewController
 >
 
 @property (nonatomic, strong) TICAlbumsViewController *albumsViewController;
@@ -25,6 +24,8 @@ MHWAlbumsViewController
 
 @property (nonatomic, strong) UIButton *albumPickerButton;
 @property (nonatomic, strong) UIBarButtonItem *titleButtonItem;
+
+@property (nonatomic, strong) TICImagePickerViewModel *viewModel;
 
 @end
 
@@ -39,8 +40,10 @@ MHWAlbumsViewController
     _shouldDisplayNumberOfAssetsInAlbum = YES;
     
     //Grid configuration:
-    _columnsInPortrait = 3;
-    _minimumInteritemSpacing = 2.0;
+    _numberOfColumnsInPortrait = 3;
+    _numberOfColumnsInLandscape = 5;
+    _minimumInteritemSpacing = 1.0;
+    _minimumLineSpacing = 1.0;
     
     _assetsFetchOptions = [PHFetchOptions new];
     _assetsFetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
@@ -108,14 +111,29 @@ MHWAlbumsViewController
 - (void)setupAssetsGridViewController {
   [self setupNavigationItem:self.imageGridViewController.navigationItem];
   [self setupToolbar];
-  
-  PHFetchResult *collectionFetchResult = self.albumsViewController.collectionsFetchResults.firstObject;
-  PHAssetCollection *assetCollection = collectionFetchResult.firstObject;
+
+  PHAssetCollection *assetCollection = self.albumsViewController.assetCollections.firstObject;
   [self updateGridViewController:self.imageGridViewController collection:assetCollection];
 }
 
 - (void)displayAuthorizationError {
   NSLog(@"do nothing");
+}
+
+#pragma mark -
+#pragma mark - Properties
+
+- (TICImagePickerViewModel *)viewModel {
+  if (!_viewModel) {
+    _viewModel = [TICImagePickerViewModel new];
+    _viewModel.shouldDisplayNumberOfAssets = self.shouldDisplayNumberOfAssetsInAlbum;
+    _viewModel.assetsFetchOptions = self.assetsFetchOptions;
+    _viewModel.assetCollectionSubtypes = @[
+                                           @(PHAssetCollectionSubtypeSmartAlbumUserLibrary),
+                                           @(PHAssetCollectionSubtypeSmartAlbumRecentlyAdded)
+                                           ];
+  }
+  return _viewModel;
 }
 
 #pragma mark -
@@ -125,8 +143,7 @@ MHWAlbumsViewController
   if (!_albumsViewController) {
     _albumsViewController = [[TICAlbumsViewController alloc] init];
     _albumsViewController.delegate = self;
-    _albumsViewController.shouldDisplayNumberOfAssets = self.shouldDisplayNumberOfAssetsInAlbum;
-    _albumsViewController.assetsFetchOptions = self.assetsFetchOptions;
+    _albumsViewController.viewModel = self.viewModel;
 
     CGFloat width = CGRectGetWidth(self.view.bounds);
     _albumsViewController.preferredContentSize = CGSizeMake(width - 40, width);
@@ -170,6 +187,7 @@ MHWAlbumsViewController
   PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:self.assetsFetchOptions];
   gridViewController.assetsFetchResults = assetsFetchResult;
   gridViewController.assetCollection = assetCollection;
+  [gridViewController.collectionView reloadData];
   [self updateAlbumPickerButtonWithTitle:assetCollection.localizedTitle];
 }
 
@@ -249,7 +267,7 @@ MHWAlbumsViewController
   NSMutableAttributedString *attributedTitle = [[NSMutableAttributedString alloc] initWithString:title];
   NSTextAttachment *textAttachment = [NSTextAttachment new];
   UIImage *image = [UIImage imageNamed:@"TICAlbumPickerArrow"
-                              inBundle:[NSBundle tic_bundle]
+                              inBundle:[NSBundle bundleForClass:self.class]
          compatibleWithTraitCollection:nil];
   textAttachment.image = image;
   textAttachment.bounds = CGRectMake(0, 0, image.size.width, image.size.height);
@@ -277,7 +295,8 @@ MHWAlbumsViewController
 
 - (NSString *)toolbarTitle {
   NSInteger imageCount = self.selectedAssets.count;
-  return [[NSString localizedStringWithFormat:NSLocalizedString(@"%d-photos-selected", @"%d is a number"), imageCount]
+  NSBundle *bundle = [NSBundle bundleForClass:self.class];
+  return [[NSString localizedStringWithFormat:NSLocalizedStringFromTableInBundle(@"%d-photos-selected", @"TICImagePicker", bundle, @"%d is a number"), imageCount]
           capitalizedStringWithLocale:[NSLocale currentLocale]];
 }
 

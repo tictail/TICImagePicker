@@ -19,7 +19,7 @@
 
 + (void)initialize {
   if (self == ViewController.class) {
-    [[TICImageGridViewCell appearance] setSelectedColor:[[UIColor greenColor] colorWithAlphaComponent:0.4]];
+    [[TICImageGridViewCell appearance] setSelectedColor:[[UIColor blueColor] colorWithAlphaComponent:0.4]];
     [[TICAlbumCell appearance] setTitleLabelFont:[UIFont systemFontOfSize:20]];
   }
 }
@@ -31,9 +31,10 @@
   UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
   [button setTitle:@"TICImagePickerController" forState:UIControlStateNormal];
   [button sizeToFit];
-  [self.view addSubview:button];
   button.center = self.view.center;
+  button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin;
   [button addTarget:self action:@selector(presentImagePickerController:) forControlEvents:UIControlEventTouchUpInside];
+  [self.view addSubview:button];
 }
 
 - (void)presentImagePickerController:(id)sender {

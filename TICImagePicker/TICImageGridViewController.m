@@ -18,10 +18,10 @@
 //Helper methods
 @implementation NSIndexSet (Convenience)
 
-- (NSArray *)aapl_indexPathsFromIndexesWithSection:(NSUInteger)section {
+- (NSArray *)aapl_indexPathsFromIndexesWithSection:(NSUInteger)section itemOffset:(NSUInteger)offset {
   NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:self.count];
   [self enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-    [indexPaths addObject:[NSIndexPath indexPathForItem:idx inSection:section]];
+    [indexPaths addObject:[NSIndexPath indexPathForItem:idx + offset inSection:section]];
   }];
   return indexPaths;
 }
@@ -46,6 +46,7 @@
 
 @interface TICImageGridViewController ()
 <
+UICollectionViewDelegateFlowLayout,
 PHPhotoLibraryChangeObserver,
 UINavigationControllerDelegate,
 UIImagePickerControllerDelegate,
@@ -68,15 +69,10 @@ static CGSize AssetGridThumbnailSize;
 }
 
 - (id)initWithPicker:(TICImagePickerController *)picker {
-  //Custom init. The picker contains custom information to create the FlowLayout
-  UICollectionViewFlowLayout *layout = [self collectionViewFlowLayoutForPicker:picker];
-  if (self = [super initWithCollectionViewLayout:layout]) {
+  if (self = [super initWithCollectionViewLayout:[UICollectionViewFlowLayout new]]) {
     
     self.picker = picker;
-    
-    CGFloat scale = [UIScreen mainScreen].scale;
-    AssetGridThumbnailSize = CGSizeMake(layout.itemSize.width * scale, layout.itemSize.height * scale);
-    
+
     self.collectionView.allowsMultipleSelection = YES;
   
     [self.collectionView registerClass:[TICImageGridViewCell class]
@@ -86,13 +82,6 @@ static CGSize AssetGridThumbnailSize;
   }
   
   return self;
-}
-
-- (PHCachingImageManager *)imageManager {
-  if (!_imageManager) {
-    _imageManager = [[PHCachingImageManager alloc] init];
-  }
-  return _imageManager;
 }
 
 - (void)viewDidLoad {
@@ -118,30 +107,28 @@ static CGSize AssetGridThumbnailSize;
   }
 }
 
-- (void)setAssetsFetchResults:(PHFetchResult *)assetsFetchResults {
-  if (assetsFetchResults != _assetsFetchResults) {
-    _assetsFetchResults = assetsFetchResults;
-    [self.collectionView reloadData];
-  }
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+  // Save indexPath for the last item
+  NSIndexPath *indexPath = [[self.collectionView indexPathsForVisibleItems] lastObject];
+
+  // Update layout
+  [self.collectionViewLayout invalidateLayout];
+
+  // Restore scroll position
+  [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
+  }];
 }
 
 
-#pragma mark - Collection View Layout
+#pragma mark -
+#pragma mark - Collection View
 
-
-- (UICollectionViewFlowLayout *)collectionViewFlowLayoutForPicker:(TICImagePickerController *)picker {
-  UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-  layout.minimumInteritemSpacing = picker.minimumInteritemSpacing;
-  
-  CGFloat screenWidth = CGRectGetWidth(picker.view.bounds);
-
-  NSInteger cellTotalUsableWidth = screenWidth - (picker.columnsInPortrait - 1) * picker.minimumInteritemSpacing;
-  layout.itemSize = CGSizeMake(cellTotalUsableWidth/picker.columnsInPortrait, cellTotalUsableWidth/picker.columnsInPortrait);
-  CGFloat cellTotalUsedWidth = layout.itemSize.width * picker.columnsInPortrait;
-  CGFloat spaceTotalWidth = screenWidth-cellTotalUsedWidth;
-  CGFloat spaceWidth = spaceTotalWidth/(picker.columnsInPortrait-1);
-  layout.minimumLineSpacing = spaceWidth;
-  return layout;
+- (PHCachingImageManager *)imageManager {
+  if (!_imageManager) {
+    _imageManager = [[PHCachingImageManager alloc] init];
+  }
+  return _imageManager;
 }
 
 
@@ -150,7 +137,6 @@ static CGSize AssetGridThumbnailSize;
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
   return 1;
 }
-
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
   if (indexPath.item == 0 && [TICCameraGridViewCell isCameraAvailable]) {
@@ -258,35 +244,6 @@ static CGSize AssetGridThumbnailSize;
   }
 }
 
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-  if ([self isAssetIndexPath:indexPath]) {
-    PHAsset *asset = [self assetAtIndexPath:indexPath];
-    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:shouldHighlightAsset:)]) {
-      return [self.picker.delegate assetsPickerController:self.picker shouldHighlightAsset:asset];
-    }
-  }
-  return YES;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-  if ([self isAssetIndexPath:indexPath]) {
-    PHAsset *asset = [self assetAtIndexPath:indexPath];
-    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didHighlightAsset:)]) {
-      [self.picker.delegate assetsPickerController:self.picker didHighlightAsset:asset];
-    }
-  }
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-  if ([self isAssetIndexPath:indexPath]) {
-    PHAsset *asset = [self assetAtIndexPath:indexPath];
-    
-    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didUnhighlightAsset:)]) {
-      [self.picker.delegate assetsPickerController:self.picker didUnhighlightAsset:asset];
-    }
-  }
-}
-
 
 #pragma mark - willDisplayCell:/didEndDisplayingCell:
 
@@ -342,18 +299,19 @@ static CGSize AssetGridThumbnailSize;
         
       } else {
         // if we have incremental diffs, tell the collection view to animate insertions and deletions
+        NSUInteger itemOffset = [TICCameraGridViewCell isCameraAvailable] ? 1 : 0;
         [collectionView performBatchUpdates:^{
           NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
           if ([removedIndexes count]) {
-            [collectionView deleteItemsAtIndexPaths:[removedIndexes aapl_indexPathsFromIndexesWithSection:0]];
+            [collectionView deleteItemsAtIndexPaths:[removedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset]];
           }
           NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
           if ([insertedIndexes count]) {
-            [collectionView insertItemsAtIndexPaths:[insertedIndexes aapl_indexPathsFromIndexesWithSection:0]];
+            [collectionView insertItemsAtIndexPaths:[insertedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset]];
           }
           NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
           if ([changedIndexes count]) {
-            [collectionView reloadItemsAtIndexPaths:[changedIndexes aapl_indexPathsFromIndexesWithSection:0]];
+            [collectionView reloadItemsAtIndexPaths:[changedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset]];
           }
         } completion:NULL];
       }
@@ -465,7 +423,6 @@ static CGSize AssetGridThumbnailSize;
 #pragma mark - 
 #pragma mark - Camera
 
-
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
   UIImage *image = info[UIImagePickerControllerOriginalImage];
   __block NSString *placeholderLocalIdentifier = nil;
@@ -498,6 +455,30 @@ static CGSize AssetGridThumbnailSize;
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
   [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+}
+
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+  NSUInteger numberOfColumns;
+  if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
+    numberOfColumns = self.picker.numberOfColumnsInPortrait;
+  } else {
+    numberOfColumns = self.picker.numberOfColumnsInLandscape;
+  }
+
+  CGFloat width = (CGRectGetWidth(self.view.frame) - self.picker.minimumInteritemSpacing * (numberOfColumns - 1)) / numberOfColumns;
+  AssetGridThumbnailSize = CGSizeMake(width, width);
+  return AssetGridThumbnailSize;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+  return self.picker.minimumInteritemSpacing;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+  return self.picker.minimumLineSpacing;
 }
 
 @end

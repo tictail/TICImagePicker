@@ -58,11 +58,12 @@
 /**
  *  Grid customizations:
  *
- *  - columnsPortrait: Number of columns in portrait (3 by default)
- *  - minimumInteritemSpacing: Horizontal and vertical minimum space between grid cells (2.0 by default)
+ *  - numberOfColumnsPortrait: Number of columns in portrait (3 by default)
+ *  - numberOfColumnsLandscape: Number of columns in portrait (5 by default)
+ *  - minimumInteritemSpacing: Horizontal and vertical minimum space between grid cells (1.0 by default)
  */
-@property (nonatomic) NSInteger columnsInPortrait;
-@property (nonatomic) CGFloat minimumInteritemSpacing;
+@property (nonatomic) NSInteger numberOfColumnsInPortrait, numberOfColumnsInLandscape;
+@property (nonatomic) CGFloat minimumInteritemSpacing, minimumLineSpacing;
 
 
 @property (nonatomic, strong) UINavigationController *childNavigationController;
@@ -166,42 +167,6 @@
  *
  */
 - (void)assetsPickerController:(TICImagePickerController *)picker didDeselectAsset:(PHAsset *)asset;
-
-
-/**
- *  @name Managing Asset Highlighting
- */
-
-/**
- *  Asks the delegate if the specified asset should be highlighted.
- *
- *  @param picker The controller object managing the assets picker interface.
- *  @param asset  The asset to be highlighted.
- *
- *  @return `YES` if the asset should be highlighted or `NO` if it should not.
- */
-- (BOOL)assetsPickerController:(TICImagePickerController *)picker shouldHighlightAsset:(PHAsset *)asset;
-
-/**
- *  Tells the delegate that asset was highlighted.
- *
- *  @param picker    The controller object managing the assets picker interface.
- *  @param indexPath The asset that was highlighted.
- *
- */
-- (void)assetsPickerController:(TICImagePickerController *)picker didHighlightAsset:(PHAsset *)asset;
-
-
-/**
- *  Tells the delegate that the highlight was removed from the asset.
- *
- *  @param picker    The controller object managing the assets picker interface.
- *  @param indexPath The asset that had its highlight removed.
- *
- */
-- (void)assetsPickerController:(TICImagePickerController *)picker didUnhighlightAsset:(PHAsset *)asset;
-
-
 
 
 @end

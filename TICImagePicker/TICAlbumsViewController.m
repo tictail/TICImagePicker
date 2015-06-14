@@ -13,6 +13,7 @@
 @interface TICAlbumsViewController() <PHPhotoLibraryChangeObserver>
 
 @property (nonatomic, strong) PHImageManager *imageManager;
+@property (nonatomic, strong) NSArray *collectionsFetchResults;
 
 @end
 
@@ -38,13 +39,13 @@
 
 - (NSArray *)collectionsFetchResults {
   if (!_collectionsFetchResults) {
-    PHFetchResult *smartUserLibraryAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
-                                                                                     subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary
-                                                                                     options:nil];
-    PHFetchResult *smartRegularAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
-                                                                                 subtype:PHAssetCollectionSubtypeAlbumRegular
-                                                                                 options:nil];
-    self.collectionsFetchResults = @[smartUserLibraryAlbums, smartRegularAlbums];
+    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
+                                                                          subtype:PHAssetCollectionSubtypeAny
+                                                                          options:nil];
+    PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                                                                         subtype:PHAssetCollectionSubtypeAny
+                                                                         options:nil];
+    self.collectionsFetchResults = @[smartAlbums, userAlbums];
   }
   return _collectionsFetchResults;
 }
@@ -75,17 +76,52 @@
 }
 
 
-#pragma mark - UITableViewDataSource
+#pragma mark -
+#pragma mark - Methods
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-  return self.collectionsFetchResults.count;
+- (NSArray *)assetCollections {
+  if (!_assetCollections) {
+    NSMutableArray *assetCollections = [NSMutableArray array];
+
+    // Filter albums
+    NSArray *assetCollectionSubtypes = self.viewModel.assetCollectionSubtypes;
+    NSMutableDictionary *smartAlbums = [NSMutableDictionary dictionaryWithCapacity:assetCollectionSubtypes.count];
+    NSMutableArray *userAlbums = [NSMutableArray array];
+
+    for (PHFetchResult *fetchResult in self.collectionsFetchResults) {
+      [fetchResult enumerateObjectsUsingBlock:^(PHAssetCollection *assetCollection, NSUInteger index, BOOL *stop) {
+        if (assetCollection.assetCollectionSubtype == PHAssetCollectionSubtypeAlbumRegular) {
+          [userAlbums addObject:assetCollection];
+        } else if ([assetCollectionSubtypes containsObject:@(assetCollection.assetCollectionSubtype)]) {
+          smartAlbums[@(assetCollection.assetCollectionSubtype)] = assetCollection;
+        }
+      }];
+    }
+
+    // Fetch smart albums
+    for (NSNumber *assetCollectionSubtype in assetCollectionSubtypes) {
+      PHAssetCollection *assetCollection = smartAlbums[assetCollectionSubtype];
+
+      if (assetCollection) {
+        [assetCollections addObject:assetCollection];
+      }
+    }
+
+    // Fetch user albums
+    [userAlbums enumerateObjectsUsingBlock:^(PHAssetCollection *assetCollection, NSUInteger index, BOOL *stop) {
+      [assetCollections addObject:assetCollection];
+    }];
+
+    _assetCollections = [assetCollections copy];
+  }
+  return _assetCollections;
 }
 
+
+#pragma mark - UITableViewDataSource
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-  NSInteger numberOfRows = 0;
-  PHFetchResult *fetchResult = self.collectionsFetchResults[section];
-  numberOfRows = fetchResult.count;
-  return numberOfRows;
+  return self.assetCollections.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -97,15 +133,14 @@
   
   PHFetchResult *assetsFetchResult = nil;
   NSString *localizedTitle = nil;
-  
-  PHFetchResult *fetchResult = self.collectionsFetchResults[indexPath.section];
-  PHAssetCollection *assetCollection = fetchResult[indexPath.row];
+
+  PHAssetCollection *assetCollection = self.assetCollections[indexPath.row];
   localizedTitle = assetCollection.localizedTitle;
   cell.titleLabel.text = localizedTitle;
 
-  assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:self.assetsFetchOptions];
+  assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:self.viewModel.assetsFetchOptions];
   
-  if (self.shouldDisplayNumberOfAssets) {
+  if (self.viewModel.shouldDisplayNumberOfAssets) {
     cell.countLabel.text = [NSString stringWithFormat:@"%@", @(assetsFetchResult.count)];
   }
 
@@ -128,7 +163,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
   NSString *title = nil;
-  if (self.shouldDisplayAlbumSections) {
+  if (self.viewModel.shouldDisplayAlbumSections) {
     PHFetchResult *fetchResult = self.collectionsFetchResults[section];
     PHAssetCollection *assetCollection = fetchResult.firstObject;
     title = assetCollection.localizedTitle;
@@ -137,8 +172,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  PHFetchResult *fetchResult = self.collectionsFetchResults[indexPath.section];
-  PHAssetCollection *assetCollection = fetchResult[indexPath.row];
+  PHAssetCollection *assetCollection = self.assetCollections[indexPath.row];
   [self.delegate albumsViewController:self didSelectCollection:assetCollection];
 }
 
@@ -167,6 +201,7 @@
     
     if (updatedCollectionsFetchResults) {
       self.collectionsFetchResults = updatedCollectionsFetchResults;
+      self.assetCollections = nil;
       [self reloadData];
     }
     

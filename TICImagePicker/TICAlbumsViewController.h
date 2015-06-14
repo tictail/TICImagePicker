@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TICImagePickerViewModel.h"
 @import Photos;
 
 @class TICAlbumsViewController;
 
-@protocol MHWAlbumsViewController <NSObject>
+@protocol TICAlbumsViewController <NSObject>
 
 - (void)albumsViewController:(TICAlbumsViewController *)albumsViewController didSelectCollection:(PHAssetCollection *)collection;
 
@@ -21,12 +22,8 @@
 @interface TICAlbumsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, weak) id<MHWAlbumsViewController> delegate;
-@property (nonatomic, strong) NSArray *collectionsFetchResults;
-
-@property (nonatomic) BOOL shouldDisplayNumberOfAssets;
-@property (nonatomic) BOOL shouldDisplayAlbumSections;
-
-@property (nonatomic, strong) PHFetchOptions *assetsFetchOptions;
+@property (nonatomic, weak) id<TICAlbumsViewController> delegate;
+@property (nonatomic, strong) TICImagePickerViewModel *viewModel;
+@property (nonatomic, strong) NSArray *assetCollections;
 
 @end

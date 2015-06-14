@@ -7,7 +7,6 @@
 //
 
 #import "TICCameraGridViewCell.h"
-#import "NSBundle+Tictail.h"
 
 @interface TICCameraGridViewCell ()
 
@@ -77,7 +76,7 @@
 - (UIImageView *)cameraImageView {
   if (!_cameraImageView) {
     UIImage *image = [UIImage imageNamed:@"TICCameraIcon"
-                                inBundle:[NSBundle tic_bundle]
+                                inBundle:[NSBundle bundleForClass:[self class]]
            compatibleWithTraitCollection:nil];
     _cameraImageView = [[UIImageView alloc] initWithImage:image];
     _cameraImageView.contentMode = UIViewContentModeCenter;
