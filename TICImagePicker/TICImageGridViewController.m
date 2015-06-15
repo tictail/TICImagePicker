@@ -97,7 +97,7 @@ static CGSize AssetGridThumbnailSize;
   [super viewDidAppear:animated];
   [self updateCachedAssets];
   
-  if ([TICCameraGridViewCell isCameraAvailable] && [TICCameraGridViewCell authorizationStatus] == AVAuthorizationStatusNotDetermined) {
+  if ([self shouldShowCameraCell] && [TICCameraGridViewCell authorizationStatus] == AVAuthorizationStatusNotDetermined) {
     [AVCaptureDevice requestAccessForMediaType:[TICCameraGridViewCell mediaType] completionHandler:^(BOOL granted) {
       if (granted) {
         TICCameraGridViewCell *cell = (TICCameraGridViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
@@ -121,6 +121,11 @@ static CGSize AssetGridThumbnailSize;
 }
 
 
+- (BOOL)shouldShowCameraCell {
+  return [TICCameraGridViewCell isCameraAvailable] && self.assetCollection.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumUserLibrary;
+}
+
+
 #pragma mark -
 #pragma mark - Collection View
 
@@ -139,7 +144,7 @@ static CGSize AssetGridThumbnailSize;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-  if (indexPath.item == 0 && [TICCameraGridViewCell isCameraAvailable]) {
+  if (indexPath.item == 0 && [self shouldShowCameraCell]) {
     TICCameraGridViewCell *cameraPreviewCell =
     [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([TICCameraGridViewCell class])
                                               forIndexPath:indexPath];
@@ -180,7 +185,7 @@ static CGSize AssetGridThumbnailSize;
 #pragma mark - Collection View Delegate
 
 - (BOOL)isAssetIndexPath:(NSIndexPath *)indexPath {
-  return 0 < indexPath.item || ![TICCameraGridViewCell isCameraAvailable];
+  return 0 < indexPath.item || ![self shouldShowCameraCell];
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -264,14 +269,14 @@ static CGSize AssetGridThumbnailSize;
 #pragma mark - UICollectionViewDataSource
 
 - (PHAsset *)assetAtIndexPath:(NSIndexPath *)indexPath {
-  NSUInteger index = indexPath.item - ([TICCameraGridViewCell isCameraAvailable] ? 1 : 0);
+  NSUInteger index = indexPath.item - ([self shouldShowCameraCell] ? 1 : 0);
   PHAsset *asset = self.assetsFetchResults[index];
   return asset;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
   NSInteger count = self.assetsFetchResults.count;
-  if ([TICCameraGridViewCell isCameraAvailable]) {
+  if ([self shouldShowCameraCell]) {
     count++;
   }
   return count;
@@ -299,7 +304,7 @@ static CGSize AssetGridThumbnailSize;
         
       } else {
         // if we have incremental diffs, tell the collection view to animate insertions and deletions
-        NSUInteger itemOffset = [TICCameraGridViewCell isCameraAvailable] ? 1 : 0;
+        NSUInteger itemOffset = [self shouldShowCameraCell] ? 1 : 0;
         [collectionView performBatchUpdates:^{
           NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
           if ([removedIndexes count]) {
@@ -430,10 +435,6 @@ static CGSize AssetGridThumbnailSize;
     PHAssetChangeRequest *assetChangeRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
     PHObjectPlaceholder *placeholderAsset = assetChangeRequest.placeholderForCreatedAsset;
     placeholderLocalIdentifier = placeholderAsset.localIdentifier;
-    if (self.assetCollection) {
-      PHAssetCollectionChangeRequest *assetCollectionChangeRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:self.assetCollection];
-      [assetCollectionChangeRequest addAssets:@[placeholderAsset]];
-    }
   } completionHandler:^(BOOL success, NSError *error) {
     if (!success) {
       NSLog(@"Error creating asset: %@", error);
