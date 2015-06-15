@@ -11,7 +11,7 @@
 @implementation NSBundle (Tictail)
 
 + (NSBundle *)tic_bundleForClass:(Class)class {
-  NSBundle *bundle = [NSBundle bundleForClass:class];
+  NSBundle *bundle = [NSBundle mainBundle];
   NSString *bundlePath = [bundle pathForResource:@"TICImagePicker" ofType:@"bundle"];
   if (bundlePath) {
     bundle = [NSBundle bundleWithPath:bundlePath];
