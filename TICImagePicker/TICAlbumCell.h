@@ -7,9 +7,8 @@
 //
 
 @import UIKit;
-@import Photos;
 
-static CGFloat const MHWAlbumCellImageRadius = 70;
+static CGFloat const TICAlbumCellImageDiameter = 60;
 
 @interface TICAlbumCell : UITableViewCell
 
@@ -18,5 +17,7 @@ static CGFloat const MHWAlbumCellImageRadius = 70;
 
 @property (nonatomic, strong) UILabel *countLabel;
 @property (nonatomic, strong) UIFont *countLabelFont UI_APPEARANCE_SELECTOR;
+
+@property (nonatomic, strong) UIImageView *thumbnailImageView;
 
 @end

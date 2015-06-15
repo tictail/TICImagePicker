@@ -64,7 +64,7 @@
     _tableView.dataSource = self;
     _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     _tableView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.0];
-    _tableView.rowHeight = MHWAlbumCellImageRadius + 8 * 2;
+    _tableView.rowHeight = TICAlbumCellImageDiameter + 10 * 2;
     UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     _tableView.separatorEffect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
     _tableView.separatorInset = UIEdgeInsetsZero;
@@ -101,7 +101,6 @@
     // Fetch smart albums
     for (NSNumber *assetCollectionSubtype in assetCollectionSubtypes) {
       PHAssetCollection *assetCollection = smartAlbums[assetCollectionSubtype];
-
       if (assetCollection) {
         [assetCollections addObject:assetCollection];
       }
@@ -134,7 +133,7 @@
   PHFetchResult *assetsFetchResult = nil;
   NSString *localizedTitle = nil;
 
-  PHAssetCollection *assetCollection = self.assetCollections[indexPath.row];
+  PHAssetCollection *assetCollection = self.assetCollections[indexPath.item];
   localizedTitle = assetCollection.localizedTitle;
   cell.titleLabel.text = localizedTitle;
 
@@ -146,7 +145,7 @@
 
   PHAsset *asset = assetsFetchResult.firstObject;
   CGFloat scale = [UIScreen mainScreen].scale;
-  CGSize targetSize = CGSizeMake(MHWAlbumCellImageRadius * scale, MHWAlbumCellImageRadius * scale);
+  CGSize targetSize = CGSizeMake(TICAlbumCellImageDiameter * scale, TICAlbumCellImageDiameter * scale);
   
   [self.imageManager requestImageForAsset:asset
                                targetSize:targetSize
@@ -154,7 +153,7 @@
                                   options:nil
                             resultHandler:^(UIImage *result, NSDictionary *info) {
                               if (cell.tag == currentTag) {
-                                cell.imageView.image = result;
+                                cell.thumbnailImageView.image = result;
                               }
    }];
   return cell;

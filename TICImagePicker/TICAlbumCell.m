@@ -20,10 +20,8 @@
     self.backgroundColor = [UIColor clearColor];
     self.accessoryType = UITableViewCellAccessoryNone;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    self.imageView.clipsToBounds = YES;
-    self.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.clipsToBounds = YES;
 
+    [self.contentView addSubview:self.thumbnailImageView];
     [self.contentView addSubview:self.titleLabel];
     
     UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
@@ -31,12 +29,21 @@
     UIVisualEffectView *vibrancyView = [[UIVisualEffectView alloc] initWithEffect:vibrancyEffect];
     vibrancyView.frame = self.bounds;
     vibrancyView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    [self insertSubview:vibrancyView atIndex:0];
+    [self.contentView insertSubview:vibrancyView atIndex:0];
 
     [vibrancyView.contentView addSubview:self.countLabel];
   }
   
   return self;
+}
+
+- (UIImageView *)thumbnailImageView {
+  if (!_thumbnailImageView) {
+    _thumbnailImageView = [UIImageView new];
+    _thumbnailImageView.clipsToBounds = YES;
+    _thumbnailImageView.contentMode = UIViewContentModeScaleAspectFill;
+  }
+  return _thumbnailImageView;
 }
 
 - (UIFont *)titleLabelFont {
@@ -82,12 +89,12 @@
 - (void)layoutSubviews {
   [super layoutSubviews];
   
-  CGFloat height = MHWAlbumCellImageRadius;
+  CGFloat height = TICAlbumCellImageDiameter;
   CGFloat xMargin = 15;
-  CGFloat yMargin = (CGRectGetHeight(self.contentView.frame) - height) / 2;
+  CGFloat yMargin = roundf((CGRectGetHeight(self.contentView.frame) - height) / 2);
   CGRect frame = CGRectMake(xMargin, yMargin, height, height);
-  self.imageView.frame = frame;
-  self.imageView.layer.cornerRadius = CGRectGetHeight(self.imageView.frame) * 0.5;
+  self.thumbnailImageView.frame = frame;
+  self.thumbnailImageView.layer.cornerRadius = CGRectGetHeight(self.thumbnailImageView.frame) * 0.5;
 
   CGFloat labelMargin = 15;
   
@@ -97,12 +104,12 @@
   frame.origin.y = CGRectGetMidY(self.contentView.bounds) - CGRectGetHeight(frame) / 2;
   self.countLabel.frame = frame;
 
-  CGSize sizeConstraint = CGSizeMake(CGRectGetMinX(self.countLabel.frame) - CGRectGetMaxX(self.imageView.frame) - 2 * 5,
+  CGSize sizeConstraint = CGSizeMake(CGRectGetMinX(self.countLabel.frame) - CGRectGetMaxX(self.thumbnailImageView.frame) - 2 * 5,
                                      CGRectGetHeight(self.contentView.frame));
   CGSize size = [self.titleLabel sizeThatFits:sizeConstraint];
   frame = self.titleLabel.frame;
   frame.size = size;
-  frame.origin.x = CGRectGetMaxX(self.imageView.frame) + labelMargin;
+  frame.origin.x = CGRectGetMaxX(self.thumbnailImageView.frame) + labelMargin;
   frame.origin.y = (CGRectGetHeight(self.contentView.bounds) - size.height) * 0.5;
   self.titleLabel.frame = frame;
 }
