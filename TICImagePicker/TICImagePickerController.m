@@ -267,7 +267,7 @@ TICAlbumsViewController
   NSMutableAttributedString *attributedTitle = [[NSMutableAttributedString alloc] initWithString:title];
   NSTextAttachment *textAttachment = [NSTextAttachment new];
   UIImage *image = [UIImage imageNamed:@"TICAlbumPickerArrow"
-                              inBundle:[NSBundle bundleForClass:self.class]
+                              inBundle:[NSBundle bundleWithIdentifier:@"TICImagePicker"]
          compatibleWithTraitCollection:nil];
   textAttachment.image = image;
   textAttachment.bounds = CGRectMake(0, 0, image.size.width, image.size.height);
@@ -295,7 +295,7 @@ TICAlbumsViewController
 
 - (NSString *)toolbarTitle {
   NSInteger imageCount = self.selectedAssets.count;
-  NSBundle *bundle = [NSBundle bundleForClass:self.class];
+  NSBundle *bundle = [NSBundle bundleWithIdentifier:@"TICImagePicker"];
   return [[NSString localizedStringWithFormat:NSLocalizedStringFromTableInBundle(@"%d-photos-selected", @"TICImagePicker", bundle, @"%d is a number"), imageCount]
           capitalizedStringWithLocale:[NSLocale currentLocale]];
 }

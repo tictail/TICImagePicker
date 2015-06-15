@@ -76,7 +76,7 @@
 - (UIImageView *)cameraImageView {
   if (!_cameraImageView) {
     UIImage *image = [UIImage imageNamed:@"TICCameraIcon"
-                                inBundle:[NSBundle bundleForClass:[self class]]
+                                inBundle:[NSBundle bundleWithIdentifier:@"TICImagePicker"]
            compatibleWithTraitCollection:nil];
     _cameraImageView = [[UIImageView alloc] initWithImage:image];
     _cameraImageView.contentMode = UIViewContentModeCenter;
