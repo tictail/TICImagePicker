@@ -9,7 +9,7 @@ Pod::Spec.new do |spec|
   spec.frameworks = 'Photos'
   spec.platform = :ios, '8.0'
   spec.source_files = 'TICImagePicker/*.{h,m}'
-  spec.resource_bundles = { 'TICImagePicker' => 'TICImagePicker/Resources/**/*}' }
+  spec.resource_bundles = { 'TICImagePicker' => 'TICImagePicker/Resources/*.{lproj,png}' }
   spec.requires_arc = true
 end
 
