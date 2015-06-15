@@ -9,6 +9,7 @@
 #import "TICImagePickerController.h"
 #import "TICAlbumsViewController.h"
 #import "TICImageGridViewController.h"
+#import "NSBundle+Tictail.h"
 
 @import Photos;
 
@@ -267,7 +268,7 @@ TICAlbumsViewController
   NSMutableAttributedString *attributedTitle = [[NSMutableAttributedString alloc] initWithString:title];
   NSTextAttachment *textAttachment = [NSTextAttachment new];
   UIImage *image = [UIImage imageNamed:@"TICAlbumPickerArrow"
-                              inBundle:[NSBundle bundleWithIdentifier:@"TICImagePicker"]
+                              inBundle:[NSBundle tic_bundleForClass:self.class]
          compatibleWithTraitCollection:nil];
   textAttachment.image = image;
   textAttachment.bounds = CGRectMake(0, 0, image.size.width, image.size.height);
@@ -295,7 +296,7 @@ TICAlbumsViewController
 
 - (NSString *)toolbarTitle {
   NSInteger imageCount = self.selectedAssets.count;
-  NSBundle *bundle = [NSBundle bundleWithIdentifier:@"TICImagePicker"];
+  NSBundle *bundle = [NSBundle tic_bundleForClass:self.class];
   return [[NSString localizedStringWithFormat:NSLocalizedStringFromTableInBundle(@"%d-photos-selected", @"TICImagePicker", bundle, @"%d is a number"), imageCount]
           capitalizedStringWithLocale:[NSLocale currentLocale]];
 }

@@ -12,6 +12,8 @@
 		3349504B1B2B144600A585F7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3349504A1B2B144600A585F7 /* ViewController.m */; };
 		334950501B2B144600A585F7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3349504F1B2B144600A585F7 /* Images.xcassets */; };
 		3349505F1B2B144600A585F7 /* TICImagePickerExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3349505E1B2B144600A585F7 /* TICImagePickerExampleTests.m */; };
+		338181931B2F39FF00CC5854 /* NSBundle+Tictail.h in Headers */ = {isa = PBXBuildFile; fileRef = 338181911B2F39FF00CC5854 /* NSBundle+Tictail.h */; };
+		338181941B2F39FF00CC5854 /* NSBundle+Tictail.m in Sources */ = {isa = PBXBuildFile; fileRef = 338181921B2F39FF00CC5854 /* NSBundle+Tictail.m */; };
 		73003ADF1B2D97B200F2FC43 /* TICImagePicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 73003ADE1B2D97B200F2FC43 /* TICImagePicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		73003AE51B2D97B300F2FC43 /* TICImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73003ADA1B2D97B200F2FC43 /* TICImagePicker.framework */; };
 		73003AEE1B2D97B300F2FC43 /* TICImagePickerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 73003AED1B2D97B300F2FC43 /* TICImagePickerTests.m */; };
@@ -102,6 +104,8 @@
 		334950781B2B14B100A585F7 /* TICCameraGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICCameraGridViewCell.m; sourceTree = "<group>"; };
 		334950791B2B14B100A585F7 /* TICImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICImagePickerController.h; sourceTree = "<group>"; };
 		3349507A1B2B14B100A585F7 /* TICImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICImagePickerController.m; sourceTree = "<group>"; };
+		338181911B2F39FF00CC5854 /* NSBundle+Tictail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Tictail.h"; sourceTree = "<group>"; };
+		338181921B2F39FF00CC5854 /* NSBundle+Tictail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Tictail.m"; sourceTree = "<group>"; };
 		73003ACD1B2D97A000F2FC43 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73003ACE1B2D97A000F2FC43 /* TICImagePicker-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TICImagePicker-Prefix.pch"; sourceTree = "<group>"; };
 		73003AD01B2D97A000F2FC43 /* TICImagePicker-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TICImagePicker-Info.plist"; sourceTree = "<group>"; };
@@ -226,6 +230,8 @@
 				3349507A1B2B14B100A585F7 /* TICImagePickerController.m */,
 				73811B8C1B2C88500028B3F6 /* TICImagePickerViewModel.h */,
 				73811B8D1B2C88500028B3F6 /* TICImagePickerViewModel.m */,
+				338181911B2F39FF00CC5854 /* NSBundle+Tictail.h */,
+				338181921B2F39FF00CC5854 /* NSBundle+Tictail.m */,
 				334950851B2B150600A585F7 /* Album */,
 				334950841B2B150000A585F7 /* Grid */,
 				334950691B2B14B100A585F7 /* Resources */,
@@ -330,6 +336,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				338181931B2F39FF00CC5854 /* NSBundle+Tictail.h in Headers */,
 				73003ADF1B2D97B200F2FC43 /* TICImagePicker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -523,6 +530,7 @@
 				73003AFF1B2D97E800F2FC43 /* TICImageGridViewController.m in Sources */,
 				73003B011B2D97E800F2FC43 /* TICCameraGridViewCell.m in Sources */,
 				73003AFD1B2D97E800F2FC43 /* TICAlbumCell.m in Sources */,
+				338181941B2F39FF00CC5854 /* NSBundle+Tictail.m in Sources */,
 				73003AFE1B2D97E800F2FC43 /* TICAlbumsViewController.m in Sources */,
 				73003AFB1B2D97E800F2FC43 /* TICImagePickerViewModel.m in Sources */,
 			);
@@ -826,6 +834,7 @@
 				73003AF51B2D97B300F2FC43 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		73003AF71B2D97B300F2FC43 /* Build configuration list for PBXNativeTarget "TICImagePickerTests" */ = {
 			isa = XCConfigurationList;
@@ -834,6 +843,7 @@
 				73003AF91B2D97B300F2FC43 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
