@@ -68,14 +68,8 @@ TICAlbumsViewController
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  self.view.backgroundColor = [UIColor redColor];
-  
   [self setupChildNavigationController];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-  [super viewDidAppear:animated];
-
+  
   PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
   if (status == PHAuthorizationStatusNotDetermined) {
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
@@ -92,7 +86,6 @@ TICAlbumsViewController
   } else {
     [self displayAuthorizationError];
   }
-
 }
 
 #pragma mark -
@@ -107,10 +100,11 @@ TICAlbumsViewController
   [self.view addSubview:self.childNavigationController.view];
   [self addChildViewController:self.childNavigationController];
   [self.childNavigationController didMoveToParentViewController:self];
+  
+  [self setupNavigationItem:self.imageGridViewController.navigationItem];
 }
 
 - (void)setupAssetsGridViewController {
-  [self setupNavigationItem:self.imageGridViewController.navigationItem];
   [self setupToolbar];
 
   PHAssetCollection *assetCollection = self.albumsViewController.assetCollections.firstObject;
@@ -120,6 +114,7 @@ TICAlbumsViewController
 - (void)displayAuthorizationError {
   NSLog(@"do nothing");
 }
+
 
 #pragma mark -
 #pragma mark - Properties
@@ -131,7 +126,8 @@ TICAlbumsViewController
     _viewModel.assetsFetchOptions = self.assetsFetchOptions;
     _viewModel.assetCollectionSubtypes = @[
                                            @(PHAssetCollectionSubtypeSmartAlbumUserLibrary),
-                                           @(PHAssetCollectionSubtypeSmartAlbumRecentlyAdded)
+                                           @(PHAssetCollectionSubtypeSmartAlbumRecentlyAdded),
+                                           @(PHAssetCollectionSubtypeAlbumRegular),
                                            ];
   }
   return _viewModel;
