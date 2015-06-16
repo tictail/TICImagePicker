@@ -171,7 +171,6 @@
 				334950411B2B144600A585F7 /* TICImagePickerExample */,
 				3349505B1B2B144600A585F7 /* TICImagePickerExampleTests */,
 				73003ACB1B2D97A000F2FC43 /* TICImagePicker */,
-				73003ADB1B2D97B200F2FC43 /* TICImagePicker */,
 				73003AEA1B2D97B300F2FC43 /* TICImagePickerTests */,
 				334950401B2B144600A585F7 /* Products */,
 			);
@@ -232,12 +231,11 @@
 		334950681B2B14B100A585F7 /* TICImagePicker */ = {
 			isa = PBXGroup;
 			children = (
-				334950791B2B14B100A585F7 /* TICImagePickerController.h */,
-				3349507A1B2B14B100A585F7 /* TICImagePickerController.m */,
-				73811B8C1B2C88500028B3F6 /* TICImagePickerViewModel.h */,
-				73811B8D1B2C88500028B3F6 /* TICImagePickerViewModel.m */,
-				338181911B2F39FF00CC5854 /* NSBundle+Tictail.h */,
-				338181921B2F39FF00CC5854 /* NSBundle+Tictail.m */,
+				73003ADE1B2D97B200F2FC43 /* TICImagePicker.h */,
+				73003ADC1B2D97B200F2FC43 /* Supporting Files */,
+				73003ADD1B2D97B200F2FC43 /* Info.plist */,
+				33DBE6641B3024920052FB3D /* TICImagePickerController */,
+				33DBE6631B30248A0052FB3D /* Categories */,
 				334950851B2B150600A585F7 /* Album */,
 				334950841B2B150000A585F7 /* Grid */,
 				334950691B2B14B100A585F7 /* Resources */,
@@ -283,6 +281,26 @@
 			name = Album;
 			sourceTree = "<group>";
 		};
+		33DBE6631B30248A0052FB3D /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				338181911B2F39FF00CC5854 /* NSBundle+Tictail.h */,
+				338181921B2F39FF00CC5854 /* NSBundle+Tictail.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		33DBE6641B3024920052FB3D /* TICImagePickerController */ = {
+			isa = PBXGroup;
+			children = (
+				334950791B2B14B100A585F7 /* TICImagePickerController.h */,
+				3349507A1B2B14B100A585F7 /* TICImagePickerController.m */,
+				73811B8C1B2C88500028B3F6 /* TICImagePickerViewModel.h */,
+				73811B8D1B2C88500028B3F6 /* TICImagePickerViewModel.m */,
+			);
+			name = TICImagePickerController;
+			sourceTree = "<group>";
+		};
 		73003ACB1B2D97A000F2FC43 /* TICImagePicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -301,19 +319,9 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		73003ADB1B2D97B200F2FC43 /* TICImagePicker */ = {
-			isa = PBXGroup;
-			children = (
-				73003ADE1B2D97B200F2FC43 /* TICImagePicker.h */,
-				73003ADC1B2D97B200F2FC43 /* Supporting Files */,
-			);
-			path = TICImagePicker;
-			sourceTree = "<group>";
-		};
 		73003ADC1B2D97B200F2FC43 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				73003ADD1B2D97B200F2FC43 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";

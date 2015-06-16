@@ -15,5 +15,5 @@ FOUNDATION_EXPORT double TICImagePickerVersionNumber;
 FOUNDATION_EXPORT const unsigned char TICImagePickerVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <TICImagePicker/PublicHeader.h>
-
+#import <TICImagePicker/TICImagePickerController.h>
 
