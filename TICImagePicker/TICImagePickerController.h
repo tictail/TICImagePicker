@@ -168,5 +168,16 @@
  */
 - (void)assetsPickerController:(TICImagePickerController *)picker didDeselectAsset:(PHAsset *)asset;
 
+/**
+ *  Asks the delegate if the
+ *
+ *  @param picker    The controller object managing the assets picker interface.
+ *  @param imagePickerController The image picker that took an image using the camera
+ *  @param infoDictionary the info dictionary containing the info about the image taken
+ *
+ */
+- (BOOL)assetsPickerController:(TICImagePickerController *)picker
+      shouldDismissImagePicker:(UIImagePickerController *)imagePickerController
+        andInsertMediaWithInfo:(NSDictionary *)infoDictionary;
 
 @end

@@ -428,7 +428,15 @@ static CGSize AssetGridThumbnailSize;
 #pragma mark - 
 #pragma mark - Camera
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+- (void)imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary *)info {
+
+  if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:shouldDismissImagePicker:andInsertMediaWithInfo:)]) {
+    if (![self.picker.delegate assetsPickerController:self.picker shouldDismissImagePicker:picker andInsertMediaWithInfo:info]) {
+      return;
+    }
+  }
+
   UIImage *image = info[UIImagePickerControllerOriginalImage];
   __block NSString *placeholderLocalIdentifier = nil;
   [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
