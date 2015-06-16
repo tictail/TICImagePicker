@@ -34,6 +34,20 @@
                ReferencedContainer = "container:TICImagePickerExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "73003AE31B2D97B300F2FC43"
+               BuildableName = "TICImagePickerTests.xctest"
+               BlueprintName = "TICImagePickerTests"
+               ReferencedContainer = "container:TICImagePickerExample.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -49,6 +63,16 @@
                BlueprintIdentifier = "334950571B2B144600A585F7"
                BuildableName = "TICImagePickerExampleTests.xctest"
                BlueprintName = "TICImagePickerExampleTests"
+               ReferencedContainer = "container:TICImagePickerExample.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "73003AE31B2D97B300F2FC43"
+               BuildableName = "TICImagePickerTests.xctest"
+               BlueprintName = "TICImagePickerTests"
                ReferencedContainer = "container:TICImagePickerExample.xcodeproj">
             </BuildableReference>
          </TestableReference>

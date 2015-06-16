@@ -14,6 +14,8 @@
 		3349505F1B2B144600A585F7 /* TICImagePickerExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3349505E1B2B144600A585F7 /* TICImagePickerExampleTests.m */; };
 		338181931B2F39FF00CC5854 /* NSBundle+Tictail.h in Headers */ = {isa = PBXBuildFile; fileRef = 338181911B2F39FF00CC5854 /* NSBundle+Tictail.h */; };
 		338181941B2F39FF00CC5854 /* NSBundle+Tictail.m in Sources */ = {isa = PBXBuildFile; fileRef = 338181921B2F39FF00CC5854 /* NSBundle+Tictail.m */; };
+		33DBE6611B301CC00052FB3D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33DBE65D1B301CBF0052FB3D /* LaunchScreen.xib */; };
+		33DBE6621B301CC00052FB3D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33DBE65F1B301CBF0052FB3D /* Main.storyboard */; };
 		73003ADF1B2D97B200F2FC43 /* TICImagePicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 73003ADE1B2D97B200F2FC43 /* TICImagePicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		73003AE51B2D97B300F2FC43 /* TICImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73003ADA1B2D97B200F2FC43 /* TICImagePicker.framework */; };
 		73003AEE1B2D97B300F2FC43 /* TICImagePickerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 73003AED1B2D97B300F2FC43 /* TICImagePickerTests.m */; };
@@ -106,6 +108,8 @@
 		3349507A1B2B14B100A585F7 /* TICImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICImagePickerController.m; sourceTree = "<group>"; };
 		338181911B2F39FF00CC5854 /* NSBundle+Tictail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Tictail.h"; sourceTree = "<group>"; };
 		338181921B2F39FF00CC5854 /* NSBundle+Tictail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Tictail.m"; sourceTree = "<group>"; };
+		33DBE65E1B301CBF0052FB3D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		33DBE6601B301CBF0052FB3D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
 		73003ACD1B2D97A000F2FC43 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73003ACE1B2D97A000F2FC43 /* TICImagePicker-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TICImagePicker-Prefix.pch"; sourceTree = "<group>"; };
 		73003AD01B2D97A000F2FC43 /* TICImagePicker-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TICImagePicker-Info.plist"; sourceTree = "<group>"; };
@@ -192,6 +196,8 @@
 				334950491B2B144600A585F7 /* ViewController.h */,
 				3349504A1B2B144600A585F7 /* ViewController.m */,
 				3349504F1B2B144600A585F7 /* Images.xcassets */,
+				33DBE65D1B301CBF0052FB3D /* LaunchScreen.xib */,
+				33DBE65F1B301CBF0052FB3D /* Main.storyboard */,
 				334950421B2B144600A585F7 /* Supporting Files */,
 			);
 			path = TICImagePickerExample;
@@ -468,6 +474,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33DBE6621B301CC00052FB3D /* Main.storyboard in Resources */,
+				33DBE6611B301CC00052FB3D /* LaunchScreen.xib in Resources */,
 				334950501B2B144600A585F7 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -570,6 +578,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		33DBE65D1B301CBF0052FB3D /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				33DBE65E1B301CBF0052FB3D /* en */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		33DBE65F1B301CBF0052FB3D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				33DBE6601B301CBF0052FB3D /* en */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		73003B131B2D99F900F2FC43 /* TICImagePicker.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
