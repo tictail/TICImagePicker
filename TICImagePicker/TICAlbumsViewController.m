@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) PHImageManager *imageManager;
 @property (nonatomic, strong) NSArray *collectionsFetchResults;
+@property (nonatomic, strong) NSArray *assetsFetchResults;
 
 @end
 
@@ -65,8 +66,6 @@
     _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     _tableView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.0];
     _tableView.rowHeight = TICAlbumCellImageDiameter + 10 * 2;
-    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-    _tableView.separatorEffect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
     _tableView.separatorInset = UIEdgeInsetsZero;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [_tableView registerClass:TICAlbumCell.class forCellReuseIdentifier:NSStringFromClass(TICAlbumCell.class)];
@@ -110,6 +109,14 @@
     [userAlbums enumerateObjectsUsingBlock:^(PHAssetCollection *assetCollection, NSUInteger index, BOOL *stop) {
       [assetCollections addObject:assetCollection];
     }];
+    
+    NSMutableArray *assetsFetchResults = [@[] mutableCopy];
+    [assetCollections enumerateObjectsUsingBlock:^(PHAssetCollection *assetCollection, NSUInteger idx, BOOL *stop) {
+      PHFetchResult *assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:self.viewModel.assetsFetchOptions];
+      [assetsFetchResults addObject:assetsFetchResult];
+    }];
+    
+    self.assetsFetchResults = [assetsFetchResults copy];
 
     _assetCollections = [assetCollections copy];
   }
@@ -137,7 +144,7 @@
   localizedTitle = assetCollection.localizedTitle;
   cell.titleLabel.text = localizedTitle;
 
-  assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:self.viewModel.assetsFetchOptions];
+  assetsFetchResult = self.assetsFetchResults[indexPath.item];
   
   if (self.viewModel.shouldDisplayNumberOfAssets) {
     cell.countLabel.text = [NSString stringWithFormat:@"%@", @(assetsFetchResult.count)];
