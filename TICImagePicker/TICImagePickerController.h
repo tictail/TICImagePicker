@@ -169,15 +169,16 @@
 - (void)assetsPickerController:(TICImagePickerController *)picker didDeselectAsset:(PHAsset *)asset;
 
 /**
- *  Asks the delegate if the
+ *  Tells the delegate that the UIImagePickerController did finish picking media. If the delegate
+ *  responds to this method, it is also responsible for dismissing the picker.
  *
  *  @param picker    The controller object managing the assets picker interface.
- *  @param imagePickerController The image picker that took an image using the camera
- *  @param infoDictionary the info dictionary containing the info about the image taken
+ *  @param imagePickerController The image picker that took an image using the camera.
+ *  @param infoDictionary the info dictionary containing the info about the image taken.
  *
  */
-- (BOOL)assetsPickerController:(TICImagePickerController *)picker
-      shouldDismissImagePicker:(UIImagePickerController *)imagePickerController
-        andInsertMediaWithInfo:(NSDictionary *)infoDictionary;
+- (void)assetsPickerController:(TICImagePickerController *)picker
+                   imagePicker:(UIImagePickerController *)imagePickerController
+ didFinishPickingMediaWithInfo:(NSDictionary *)infoDictionary;
 
 @end

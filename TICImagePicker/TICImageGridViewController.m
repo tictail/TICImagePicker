@@ -431,10 +431,9 @@ static CGSize AssetGridThumbnailSize;
 - (void)imagePickerController:(UIImagePickerController *)picker
 didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
-  if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:shouldDismissImagePicker:andInsertMediaWithInfo:)]) {
-    if (![self.picker.delegate assetsPickerController:self.picker shouldDismissImagePicker:picker andInsertMediaWithInfo:info]) {
-      return;
-    }
+  if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:imagePicker:didFinishPickingMediaWithInfo:)]) {
+    [self.picker.delegate assetsPickerController:self.picker imagePicker:picker didFinishPickingMediaWithInfo:info];
+    return;
   }
 
   UIImage *image = info[UIImagePickerControllerOriginalImage];
