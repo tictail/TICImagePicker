@@ -56,6 +56,12 @@
 @property (nonatomic, assign) BOOL shouldDisplayNumberOfAssetsInAlbum;
 
 /**
+ *  Whether or not to allow multiple selection.
+ */
+@property (nonatomic, assign) BOOL allowsMultipleSelection;
+
+
+/**
  *  Grid customizations:
  *
  *  - numberOfColumnsPortrait: Number of columns in portrait (3 by default)
