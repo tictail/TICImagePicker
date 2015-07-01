@@ -89,9 +89,7 @@
 
     for (PHFetchResult *fetchResult in self.collectionsFetchResults) {
       [fetchResult enumerateObjectsUsingBlock:^(PHAssetCollection *assetCollection, NSUInteger index, BOOL *stop) {
-        if (assetCollection.assetCollectionSubtype == PHAssetCollectionSubtypeAlbumRegular) {
-          [userAlbums addObject:assetCollection];
-        } else if ([assetCollectionSubtypes containsObject:@(assetCollection.assetCollectionSubtype)]) {
+        if ([assetCollectionSubtypes containsObject:@(assetCollection.assetCollectionSubtype)]) {
           smartAlbums[@(assetCollection.assetCollectionSubtype)] = assetCollection;
         }
       }];
@@ -103,11 +101,18 @@
       if (assetCollection) {
         [assetCollections addObject:assetCollection];
       }
-    }
+    }	
 
     // Fetch user albums
     [userAlbums enumerateObjectsUsingBlock:^(PHAssetCollection *assetCollection, NSUInteger index, BOOL *stop) {
       [assetCollections addObject:assetCollection];
+    }];
+    
+    // Fetch top albums
+    [[PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+      if ([obj isKindOfClass:[PHAssetCollection class]]) {
+        [assetCollections addObject:obj];
+      }
     }];
     
     NSMutableArray *assetsFetchResults = [@[] mutableCopy];

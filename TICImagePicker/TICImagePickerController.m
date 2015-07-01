@@ -127,7 +127,6 @@ TICAlbumsViewController
     _viewModel.assetCollectionSubtypes = @[
                                            @(PHAssetCollectionSubtypeSmartAlbumUserLibrary),
                                            @(PHAssetCollectionSubtypeSmartAlbumRecentlyAdded),
-                                           @(PHAssetCollectionSubtypeAlbumRegular),
                                            ];
   }
   return _viewModel;
