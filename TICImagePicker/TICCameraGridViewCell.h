@@ -15,8 +15,8 @@
 @property (nonatomic, strong) AVCaptureSession *session;
 @property (nonatomic, strong) UIImageView *cameraImageView;
 
-- (void)startCamera;
-- (void)stopCamera;
+- (void)startCamera:(void (^)())completion;
+- (void)stopCamera:(void (^)())completion;
 
 + (AVAuthorizationStatus)authorizationStatus;
 + (BOOL)isCameraAvailable;

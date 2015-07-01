@@ -85,19 +85,25 @@
   return _cameraImageView;
 }
 
-- (void)startCamera {
+- (void)startCamera:(void (^)())completion {
   dispatch_async(self.sessionQueue, ^{
     if (!self.session.isRunning) {
       [self.session startRunning];
     }
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (completion) completion();
+    });
   });
 }
 
-- (void)stopCamera {
+- (void)stopCamera:(void (^)())completion {
   dispatch_async(self.sessionQueue, ^{
     if (_session.isRunning) {
       [_session stopRunning];
     };
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (completion) completion();
+    });
   });
 }
 

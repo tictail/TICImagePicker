@@ -95,16 +95,9 @@ static CGSize AssetGridThumbnailSize;
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
-  [self updateCachedAssets];
   
-  if ([self shouldShowCameraCell] && [TICCameraGridViewCell authorizationStatus] == AVAuthorizationStatusNotDetermined) {
-    [AVCaptureDevice requestAccessForMediaType:[TICCameraGridViewCell mediaType] completionHandler:^(BOOL granted) {
-      if (granted) {
-        TICCameraGridViewCell *cell = (TICCameraGridViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-        [cell startCamera];
-      }
-    }];
-  }
+  [self updateCachedAssets];
+  [self startCameraIfNeeded];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
@@ -121,10 +114,51 @@ static CGSize AssetGridThumbnailSize;
 }
 
 
+#pragma mark -
+#pragma mark - Camera
+
 - (BOOL)shouldShowCameraCell {
   return [TICCameraGridViewCell isCameraAvailable] && self.assetCollection.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumUserLibrary;
 }
 
+- (TICCameraGridViewCell *)cameraGridViewCell {
+  NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+  return (TICCameraGridViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+}
+
+- (void)startCameraIfNeeded {
+  if ([self shouldShowCameraCell]) {
+    AVAuthorizationStatus status = [TICCameraGridViewCell authorizationStatus];
+    if (status == AVAuthorizationStatusNotDetermined) {
+      [AVCaptureDevice requestAccessForMediaType:[TICCameraGridViewCell mediaType] completionHandler:^(BOOL granted) {
+        if (granted) {
+          [[self cameraGridViewCell] startCamera:nil];
+        }
+      }];
+    } else if (status == AVAuthorizationStatusAuthorized) {
+      [[self cameraGridViewCell] startCamera:nil];
+    }
+  }
+}
+
+- (void)presentCameraViewController {
+  if ([TICCameraGridViewCell authorizationStatus] == AVAuthorizationStatusAuthorized) {
+    [[self cameraGridViewCell] stopCamera:^{
+      UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
+      UIImagePickerController *cameraController = [UIImagePickerController new];
+      cameraController.sourceType = sourceType;
+      cameraController.delegate = self;
+      cameraController.mediaTypes = @[(NSString *)kUTTypeImage];
+      [self presentViewController:cameraController animated:YES completion:nil];
+    }];
+    } else {
+      [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
+                                  message:NSLocalizedString(@"Please make sure this app is authorized to use the camera.", nil)
+                                 delegate:self
+                        cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                        otherButtonTitles:NSLocalizedString(@"Settings", nil), nil] show];
+    }
+}
 
 #pragma mark -
 #pragma mark - Collection View
@@ -210,21 +244,8 @@ static CGSize AssetGridThumbnailSize;
       [self.picker.delegate assetsPickerController:self.picker didSelectAsset:asset];
     }
   } else {
-    UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
-    if ([TICCameraGridViewCell authorizationStatus] == AVAuthorizationStatusAuthorized) {
-      UIImagePickerController *cameraController = [UIImagePickerController new];
-      cameraController.sourceType = sourceType;
-      cameraController.delegate = self;
-      cameraController.mediaTypes = @[(NSString *)kUTTypeImage];
-      [self presentViewController:cameraController animated:YES completion:nil];
-      [collectionView deselectItemAtIndexPath:indexPath animated:NO];
-    } else {
-      [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
-                                  message:NSLocalizedString(@"Please make sure this app is authorized to use the camera.", nil)
-                                 delegate:self
-                        cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                        otherButtonTitles:NSLocalizedString(@"Settings", nil), nil] show];
-    }
+    [collectionView deselectItemAtIndexPath:indexPath animated:NO];
+    [self presentCameraViewController];
   }
 }
 
@@ -254,14 +275,14 @@ static CGSize AssetGridThumbnailSize;
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
   if ([cell isKindOfClass:[TICCameraGridViewCell class]]) {
-    [(TICCameraGridViewCell *)cell startCamera];
+    [(TICCameraGridViewCell *)cell startCamera:nil];
   }
 }
 
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
   if ([cell isKindOfClass:[TICCameraGridViewCell class]]) {
-    [(TICCameraGridViewCell *)cell stopCamera];
+    [(TICCameraGridViewCell *)cell stopCamera:nil];
   }
 }
 
@@ -426,7 +447,7 @@ static CGSize AssetGridThumbnailSize;
 
 
 #pragma mark - 
-#pragma mark - Camera
+#pragma mark - Camera View Controller
 
 - (void)imagePickerController:(UIImagePickerController *)picker
 didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -436,21 +457,23 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     return;
   }
 
-  UIImage *image = info[UIImagePickerControllerOriginalImage];
-  __block NSString *placeholderLocalIdentifier = nil;
-  [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-    PHAssetChangeRequest *assetChangeRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
-    PHObjectPlaceholder *placeholderAsset = assetChangeRequest.placeholderForCreatedAsset;
-    placeholderLocalIdentifier = placeholderAsset.localIdentifier;
-  } completionHandler:^(BOOL success, NSError *error) {
-    if (!success) {
-      NSLog(@"Error creating asset: %@", error);
-    } else {
-      [self.picker selectAsset:[PHAsset fetchAssetsWithLocalIdentifiers:@[placeholderLocalIdentifier] options:nil].firstObject];
-    }
+  [picker dismissViewControllerAnimated:YES completion:^{
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+    __block NSString *placeholderLocalIdentifier = nil;
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+      PHAssetChangeRequest *assetChangeRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
+      PHObjectPlaceholder *placeholderAsset = assetChangeRequest.placeholderForCreatedAsset;
+      placeholderLocalIdentifier = placeholderAsset.localIdentifier;
+    } completionHandler:^(BOOL success, NSError *error) {
+      if (!success) {
+        NSLog(@"Error creating asset: %@", error);
+      } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [self.picker selectAsset:[PHAsset fetchAssetsWithLocalIdentifiers:@[placeholderLocalIdentifier] options:nil].firstObject];
+        });
+      }
+    }];
   }];
-
-  [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
