@@ -231,7 +231,7 @@ TICAlbumsViewController
 
 - (void)finishPickingAssets:(id)sender {
   if ([self.delegate respondsToSelector:@selector(assetsPickerController:didFinishPickingAssets:)]) {
-    [self.delegate assetsPickerController:self didFinishPickingAssets:self.selectedAssets];
+    [self.delegate assetsPickerController:self didFinishPickingAssets:[self.selectedAssets copy]];
   }
 }
 
