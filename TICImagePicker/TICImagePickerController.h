@@ -92,9 +92,7 @@
 
 @protocol TICImagePickerControllerDelegate <NSObject>
 
-/**
- *  @name Closing the Picker
- */
+@optional
 
 /**
  *  Tells the delegate that the user finish picking photos or videos.
@@ -103,9 +101,6 @@
  */
 
 - (void)assetsPickerController:(TICImagePickerController *)picker didFinishPickingAssets:(NSArray *)assets;
-
-
-@optional
 
 /**
  *  Tells the delegate that the user cancelled the pick operation.
