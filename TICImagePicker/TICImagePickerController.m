@@ -194,14 +194,10 @@ TICAlbumsViewController
 - (void)selectAsset:(PHAsset *)asset {
   [self.selectedAssets insertObject:asset atIndex:self.selectedAssets.count];
   
-  if (self.allowsMultipleSelection) {
-    [self updateDoneButton];
-    
-    if (self.shouldDisplaySelectionInfoToolbar) {
-      [self updateToolbar];
-    }
-  } else {
-    [self finishPickingAssets:nil];
+  [self updateDoneButton];
+  
+  if (self.shouldDisplaySelectionInfoToolbar) {
+    [self updateToolbar];
   }
 }
 

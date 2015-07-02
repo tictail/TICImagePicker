@@ -73,7 +73,7 @@ static CGSize AssetGridThumbnailSize;
     
     self.picker = picker;
 
-    self.collectionView.allowsMultipleSelection = YES;
+    self.collectionView.allowsMultipleSelection = picker.allowsMultipleSelection;
   
     [self.collectionView registerClass:[TICImageGridViewCell class]
             forCellWithReuseIdentifier:NSStringFromClass([TICImageGridViewCell class])];
@@ -236,9 +236,13 @@ static CGSize AssetGridThumbnailSize;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   if ([self isAssetIndexPath:indexPath]) {
     PHAsset *asset = [self assetAtIndexPath:indexPath];
-    [self.picker selectAsset:asset];
-    
-    [collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+
+    if (self.collectionView.allowsMultipleSelection) {
+      [self.picker selectAsset:asset];
+      [collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+    } else {
+      [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    }
     
     if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didSelectAsset:)]) {
       [self.picker.delegate assetsPickerController:self.picker didSelectAsset:asset];
@@ -261,9 +265,11 @@ static CGSize AssetGridThumbnailSize;
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
   if ([self isAssetIndexPath:indexPath]) {
-    PHAsset *asset = [self assetAtIndexPath:indexPath];
-    [self.picker deselectAsset:asset];
-    
+      PHAsset *asset = [self assetAtIndexPath:indexPath];
+    if (collectionView.allowsMultipleSelection) {
+
+      [self.picker deselectAsset:asset];
+    }
     if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didDeselectAsset:)]) {
       [self.picker.delegate assetsPickerController:self.picker didDeselectAsset:asset];
     }
