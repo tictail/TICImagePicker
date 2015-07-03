@@ -482,7 +482,10 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         NSLog(@"Error creating asset: %@", error);
       } else {
         dispatch_async(dispatch_get_main_queue(), ^{
-          [self.picker selectAsset:[PHAsset fetchAssetsWithLocalIdentifiers:@[placeholderLocalIdentifier] options:nil].firstObject];
+          PHAsset *asset = [PHAsset fetchAssetsWithLocalIdentifiers:@[placeholderLocalIdentifier] options:nil].firstObject;
+          if (![self.picker.selectedAssets containsObject:asset]) {
+            [self.picker selectAsset:asset];
+          }
         });
       }
     }];
