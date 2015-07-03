@@ -11,8 +11,7 @@
 
 #import "TICImageGridViewCell.h"
 #import "TICAlbumCell.h"
-
-@class TICCameraGridViewCell;
+#import "TICCameraGridViewCell.h"
 
 @protocol TICImagePickerControllerDelegate;
 
