@@ -12,6 +12,7 @@
 #import "TICImageGridViewCell.h"
 #import "TICAlbumCell.h"
 
+@class TICCameraGridViewCell;
 
 @protocol TICImagePickerControllerDelegate;
 
@@ -54,6 +55,14 @@
  *  The number of assets is visible by default.
  */
 @property (nonatomic, assign) BOOL shouldDisplayNumberOfAssetsInAlbum;
+
+/**
+ *  Determines whether or not to use the default UIImagePickerController camera.
+ *  By default, the picker displays a UIImagePickerController for taking photos.
+ *  If set to YES, implement -assetsPickerController:didTapCameraCell: and respond accordingly.
+ */
+@property (nonatomic, assign) BOOL shouldUseCustomCameraController;
+
 
 /**
  *  Whether or not to allow multiple selection.
@@ -181,5 +190,15 @@
 - (void)assetsPickerController:(TICImagePickerController *)picker
                    imagePicker:(UIImagePickerController *)imagePickerController
  didFinishPickingMediaWithInfo:(NSDictionary *)infoDictionary;
+
+/**
+ *  Tells the delegate that the camera cell was tapped.
+ *
+ *  @param picker    The controller object managing the assets picker interface.
+ *  @param cell The cell that was tapped.
+ *
+ */
+- (void)assetsPickerController:(TICImagePickerController *)picker
+              didTapCameraCell:(TICCameraGridViewCell *)cell;
 
 @end

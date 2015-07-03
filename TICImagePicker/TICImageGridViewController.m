@@ -249,7 +249,14 @@ static CGSize AssetGridThumbnailSize;
     }
   } else {
     [collectionView deselectItemAtIndexPath:indexPath animated:NO];
-    [self presentCameraViewController];
+    
+    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didTapCameraCell:)]) {
+      TICCameraGridViewCell *cell = (TICCameraGridViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+      [self.picker.delegate assetsPickerController:self.picker didTapCameraCell:cell];
+    }
+    if (!self.picker.shouldUseCustomCameraController) {
+      [self presentCameraViewController];
+    }
   }
 }
 
