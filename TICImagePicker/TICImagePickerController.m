@@ -70,11 +70,17 @@ TICAlbumsViewController
   [super viewDidLoad];
   
   [self setupChildNavigationController];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
   
   PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
   if (status == PHAuthorizationStatusNotDetermined) {
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-      [self handleAuthorizationStatus:status];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [self handleAuthorizationStatus:status];
+      });
     }];
   } else {
     [self handleAuthorizationStatus:status];
@@ -85,7 +91,7 @@ TICAlbumsViewController
   if (status == PHAuthorizationStatusAuthorized) {
     [self setupAssetsGridViewController];
   } else {
-    [self displayAuthorizationError];
+    [self presentPhotoLibraryAuthorizationError];
   }
 }
 
@@ -110,10 +116,6 @@ TICAlbumsViewController
 
   PHAssetCollection *assetCollection = self.albumsViewController.assetCollections.firstObject;
   [self updateGridViewController:self.imageGridViewController collection:assetCollection];
-}
-
-- (void)displayAuthorizationError {
-  NSLog(@"do nothing");
 }
 
 
@@ -261,6 +263,8 @@ TICAlbumsViewController
 
 - (void)updateAlbumPickerButtonWithTitle:(NSString *)title {
   // Add some space for the arrow
+  if (!title) return;
+  
   title = [title stringByAppendingString:@" "];
   NSMutableAttributedString *attributedTitle = [[NSMutableAttributedString alloc] initWithString:title];
   NSTextAttachment *textAttachment = [NSTextAttachment new];
@@ -328,6 +332,35 @@ TICAlbumsViewController
 
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
   return UIModalPresentationNone;
+}
+
+
+#pragma mark -
+#pragma mark - Errors
+
+- (void)presentPhotoLibraryAuthorizationError {
+  NSString *title = NSLocalizedString(@"No permission", nil);
+  NSString *message = NSLocalizedString(@"This app does not have access to your photos. You can enable access in Settings.", nil);
+  UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                 message:message
+                                                          preferredStyle:UIAlertControllerStyleAlert];
+  [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                            style:UIAlertActionStyleDefault
+                                          handler:nil]];
+  [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Settings", nil)
+                                            style:UIAlertActionStyleDefault
+                                          handler:^(UIAlertAction *action) {
+                                            [self openAppSettings];
+                                          }]];
+  [self presentViewController:alert animated:YES completion:nil];
+}
+
+
+#pragma mark -
+#pragma mark - Open App Settings
+
+- (void)openAppSettings {
+  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
 }
 
 @end

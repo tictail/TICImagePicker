@@ -74,7 +74,8 @@ static CGSize AssetGridThumbnailSize;
     self.picker = picker;
 
     self.collectionView.allowsMultipleSelection = picker.allowsMultipleSelection;
-  
+    self.collectionView.backgroundColor = [UIColor whiteColor];
+
     [self.collectionView registerClass:[TICImageGridViewCell class]
             forCellWithReuseIdentifier:NSStringFromClass([TICImageGridViewCell class])];
     [self.collectionView registerClass:[TICCameraGridViewCell class]
@@ -87,15 +88,13 @@ static CGSize AssetGridThumbnailSize;
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  self.collectionView.backgroundColor = [UIColor whiteColor];
-  
   [self resetCachedAssets];
   [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
-  
+
   [self updateCachedAssets];
   [self startCameraIfNeeded];
 }
@@ -111,6 +110,21 @@ static CGSize AssetGridThumbnailSize;
   [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
     [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
   }];
+}
+
+
+#pragma mark - 
+#pragma mark - Image Manager
+
+- (PHCachingImageManager *)imageManager {
+  if (!_imageManager) {
+    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    if (status == AVAuthorizationStatusAuthorized) {
+      _imageManager = [PHCachingImageManager new];
+      [self.collectionView reloadData];
+    }
+  }
+  return _imageManager;
 }
 
 
@@ -152,30 +166,13 @@ static CGSize AssetGridThumbnailSize;
       [self presentViewController:cameraController animated:YES completion:nil];
     }];
     } else {
-      [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
-                                  message:NSLocalizedString(@"Please make sure this app is authorized to use the camera.", nil)
-                                 delegate:self
-                        cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                        otherButtonTitles:NSLocalizedString(@"Settings", nil), nil] show];
+      [self presentCameraAuthorizationError];
     }
 }
 
+
 #pragma mark -
 #pragma mark - Collection View
-
-- (PHCachingImageManager *)imageManager {
-  if (!_imageManager) {
-    _imageManager = [[PHCachingImageManager alloc] init];
-  }
-  return _imageManager;
-}
-
-
-#pragma mark - Collection View Data Source
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-  return 1;
-}
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
   if (indexPath.item == 0 && [self shouldShowCameraCell]) {
@@ -309,6 +306,7 @@ static CGSize AssetGridThumbnailSize;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+  if (!self.imageManager) return 0;
   NSInteger count = self.assetsFetchResults.count;
   if ([self shouldShowCameraCell]) {
     count++;
@@ -335,24 +333,50 @@ static CGSize AssetGridThumbnailSize;
       if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves]) {
         // we need to reload all if the incremental diffs are not available
         [collectionView reloadData];
-        
       } else {
         // if we have incremental diffs, tell the collection view to animate insertions and deletions
         NSUInteger itemOffset = [self shouldShowCameraCell] ? 1 : 0;
-        [collectionView performBatchUpdates:^{
-          NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
-          if ([removedIndexes count]) {
-            [collectionView deleteItemsAtIndexPaths:[removedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset]];
+        
+        NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
+        NSArray *removedPaths = [removedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset];
+        
+        NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
+        NSArray *insertedPaths = [insertedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset];
+        
+        NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
+        NSArray *changedPaths = [changedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset];
+        
+        BOOL shouldReload = NO;
+        
+        if (changedPaths.count && removedPaths.count) {
+          for (NSIndexPath *changedPath in changedPaths) {
+            if ([removedPaths containsObject:changedPath]) {
+              shouldReload = YES;
+              break;
+            }
           }
-          NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
-          if ([insertedIndexes count]) {
-            [collectionView insertItemsAtIndexPaths:[insertedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset]];
-          }
-          NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
-          if ([changedIndexes count]) {
-            [collectionView reloadItemsAtIndexPaths:[changedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset]];
-          }
-        } completion:NULL];
+        }
+        
+        NSIndexPath *lastRemovedIndexPath = (NSIndexPath *)removedPaths.lastObject;
+        if (lastRemovedIndexPath.item >= self.assetsFetchResults.count) {
+          shouldReload = YES;
+        }
+        
+        if (shouldReload) {
+          [collectionView reloadData];
+        } else {
+          [collectionView performBatchUpdates:^{
+            if ([removedPaths count]) {
+              [collectionView deleteItemsAtIndexPaths:removedPaths];
+            }
+            if ([insertedPaths count]) {
+              [collectionView insertItemsAtIndexPaths:insertedPaths];
+            }
+            if ([changedPaths count]) {
+              [collectionView reloadItemsAtIndexPaths:changedPaths];
+            }
+          } completion:NULL];
+        }
       }
       
       [self resetCachedAssets];
@@ -497,14 +521,6 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 }
 
 
-#pragma mark - UIAlertView
-#pragma mark -
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
-}
-
-
 #pragma mark - UICollectionViewDelegateFlowLayout
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -527,5 +543,35 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
   return self.picker.minimumLineSpacing;
 }
+
+
+#pragma mark -
+#pragma mark - Camera Error
+
+- (void)presentCameraAuthorizationError {
+  NSString *title = NSLocalizedString(@"No permission", nil);
+  NSString *message = NSLocalizedString(@"This app does not have access to your camera. You can enable access in Settings.", nil);
+  UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                 message:message
+                                                          preferredStyle:UIAlertControllerStyleAlert];
+  [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                            style:UIAlertActionStyleDefault
+                                          handler:nil]];
+  [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Settings", nil)
+                                            style:UIAlertActionStyleDefault
+                                          handler:^(UIAlertAction *action) {
+                                            [self openAppSettings];
+                                          }]];
+  [self presentViewController:alert animated:YES completion:nil];
+}
+
+
+#pragma mark -
+#pragma mark - Open App Settings
+
+- (void)openAppSettings {
+  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+}
+
 
 @end
