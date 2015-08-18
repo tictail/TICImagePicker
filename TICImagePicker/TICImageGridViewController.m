@@ -234,12 +234,8 @@ static CGSize AssetGridThumbnailSize;
   if ([self isAssetIndexPath:indexPath]) {
     PHAsset *asset = [self assetAtIndexPath:indexPath];
 
-    if (self.collectionView.allowsMultipleSelection) {
-      [self.picker selectAsset:asset];
-      [collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-    } else {
-      [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    }
+    [self.picker selectAsset:asset];
+    [collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
     
     if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didSelectAsset:)]) {
       [self.picker.delegate assetsPickerController:self.picker didSelectAsset:asset];

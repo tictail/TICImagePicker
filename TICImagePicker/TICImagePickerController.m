@@ -194,7 +194,12 @@ TICAlbumsViewController
 #pragma mark - Select / Deselect Asset
 
 - (void)selectAsset:(PHAsset *)asset {
-  [self.selectedAssets insertObject:asset atIndex:self.selectedAssets.count];
+  if (self.allowsMultipleSelection) {
+    [self.selectedAssets insertObject:asset atIndex:self.selectedAssets.count];
+  } else {
+    [self.selectedAssets removeAllObjects];
+    [self.selectedAssets addObject:asset];
+  }
   
   [self updateDoneButton];
   

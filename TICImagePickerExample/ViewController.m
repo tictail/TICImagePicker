@@ -41,6 +41,7 @@
   TICImagePickerController *imagePickerController = [TICImagePickerController new];
   self.imagePickerController = imagePickerController;
   imagePickerController.delegate = self;
+  imagePickerController.allowsMultipleSelection = NO;
   [self presentViewController:imagePickerController animated:YES completion:nil];
 }
 
@@ -51,6 +52,10 @@
 - (void)assetsPickerController:(TICImagePickerController *)picker didFinishPickingAssets:(NSArray *)assets {
   NSLog(@"Did finish picking assets: %@", assets);
   [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)assetsPickerController:(TICImagePickerController *)picker didSelectAsset:(PHAsset *)asset {
+  NSLog(@"did select asset, total: %ld", picker.selectedAssets.count);
 }
 
 - (void)didReceiveMemoryWarning {
