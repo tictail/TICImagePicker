@@ -232,14 +232,7 @@ static CGSize AssetGridThumbnailSize;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   if ([self isAssetIndexPath:indexPath]) {
-    PHAsset *asset = [self assetAtIndexPath:indexPath];
-
-    [self.picker selectAsset:asset];
-    [collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-    
-    if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didSelectAsset:)]) {
-      [self.picker.delegate assetsPickerController:self.picker didSelectAsset:asset];
-    }
+    [self selectAssetAtIndexPath:indexPath];
   } else {
     [collectionView deselectItemAtIndexPath:indexPath animated:NO];
     
@@ -276,6 +269,16 @@ static CGSize AssetGridThumbnailSize;
   }
 }
 
+
+- (void)selectAssetAtIndexPath:(NSIndexPath *)indexPath {
+  PHAsset *asset = [self assetAtIndexPath:indexPath];
+  [self.picker selectAsset:asset];
+  [self.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+  
+  if ([self.picker.delegate respondsToSelector:@selector(assetsPickerController:didSelectAsset:)]) {
+    [self.picker.delegate assetsPickerController:self.picker didSelectAsset:asset];
+  }
+}
 
 #pragma mark - willDisplayCell:/didEndDisplayingCell:
 
@@ -503,7 +506,15 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       } else {
         dispatch_async(dispatch_get_main_queue(), ^{
           PHAsset *asset = [PHAsset fetchAssetsWithLocalIdentifiers:@[placeholderLocalIdentifier] options:nil].firstObject;
-          if (![self.picker.selectedAssets containsObject:asset]) {
+          BOOL didSelectIndexPath = NO;
+          for (NSIndexPath *indexPath in self.collectionView.indexPathsForVisibleItems) {
+            if ([[self assetAtIndexPath:indexPath] isEqual:asset]) {
+              [self selectAssetAtIndexPath:indexPath];
+              didSelectIndexPath = YES;
+              break;
+            }
+          }
+          if (![self.picker.selectedAssets containsObject:asset] && !didSelectIndexPath) {
             [self.picker selectAsset:asset];
           }
         });
