@@ -41,7 +41,6 @@
   TICImagePickerController *imagePickerController = [TICImagePickerController new];
   self.imagePickerController = imagePickerController;
   imagePickerController.delegate = self;
-  imagePickerController.allowsMultipleSelection = NO;
   [self presentViewController:imagePickerController animated:YES completion:nil];
 }
 

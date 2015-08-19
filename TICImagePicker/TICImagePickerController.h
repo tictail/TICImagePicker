@@ -89,6 +89,11 @@
 - (void)deselectAsset:(PHAsset *)asset;
 
 /**
+ *  Clears any existing selection and reloads the collectionView.
+ */
+- (void)clearSelection;
+
+/**
  *  User finish Actions
  */
 - (void)dismiss:(id)sender;

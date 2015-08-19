@@ -218,6 +218,10 @@ TICAlbumsViewController
   }
 }
 
+- (void)clearSelection {
+  [self.selectedAssets removeAllObjects];
+  [self.imageGridViewController.collectionView reloadData];
+}
 
 #pragma mark -
 #pragma mark - Actions
