@@ -223,8 +223,8 @@ TICAlbumsViewController
 #pragma mark - Actions
 
 - (void)dismiss:(id)sender {
-  if ([self.delegate respondsToSelector:@selector(assetsPickerControllerDidCancel:)]) {
-    [self.delegate assetsPickerControllerDidCancel:self];
+  if ([self.delegate respondsToSelector:@selector(imagePickerControllerDidCancel:)]) {
+    [self.delegate imagePickerControllerDidCancel:self];
   }
   
   [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
@@ -232,8 +232,8 @@ TICAlbumsViewController
 
 
 - (void)finishPickingAssets:(id)sender {
-  if ([self.delegate respondsToSelector:@selector(assetsPickerController:didFinishPickingAssets:)]) {
-    [self.delegate assetsPickerController:self didFinishPickingAssets:[self.selectedAssets copy]];
+  if ([self.delegate respondsToSelector:@selector(imagePickerController:didFinishPickingAssets:)]) {
+    [self.delegate imagePickerController:self didFinishPickingAssets:[self.selectedAssets copy]];
   }
 }
 

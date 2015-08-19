@@ -45,17 +45,17 @@
   [self presentViewController:imagePickerController animated:YES completion:nil];
 }
 
-- (void)assetsPickerControllerDidCancel:(TICImagePickerController *)picker {
+- (void)imagePickerControllerDidCancel:(TICImagePickerController *)picker {
   NSLog(@"Cancelling dismisses automatically.");
 }
 
-- (void)assetsPickerController:(TICImagePickerController *)picker didFinishPickingAssets:(NSArray *)assets {
+- (void)imagePickerController:(TICImagePickerController *)picker didFinishPickingAssets:(NSArray *)assets {
   NSLog(@"Did finish picking assets: %@", assets);
   [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)assetsPickerController:(TICImagePickerController *)picker didSelectAsset:(PHAsset *)asset {
-  NSLog(@"did select asset, total: %ld", picker.selectedAssets.count);
+- (void)imagePickerController:(TICImagePickerController *)picker didSelectAsset:(PHAsset *)asset {
+  NSLog(@"did select asset, total: %@", @(picker.selectedAssets.count));
 }
 
 - (void)didReceiveMemoryWarning {

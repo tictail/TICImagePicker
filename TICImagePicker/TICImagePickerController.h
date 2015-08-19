@@ -58,7 +58,7 @@
 /**
  *  Determines whether or not to use the default UIImagePickerController camera.
  *  By default, the picker displays a UIImagePickerController for taking photos.
- *  If set to YES, implement -assetsPickerController:didTapCameraCell: and respond accordingly.
+ *  If set to YES, implement -imagePickerController:didTapCameraCell: and respond accordingly.
  */
 @property (nonatomic, assign) BOOL shouldUseCustomCameraController;
 
@@ -108,13 +108,13 @@
  *  @param assets An array containing picked PHAssets objects.
  */
 
-- (void)assetsPickerController:(TICImagePickerController *)picker didFinishPickingAssets:(NSArray *)assets;
+- (void)imagePickerController:(TICImagePickerController *)picker didFinishPickingAssets:(NSArray *)assets;
 
 /**
  *  Tells the delegate that the user cancelled the pick operation.
  *  @param picker The controller object managing the assets picker interface.
  */
-- (void)assetsPickerControllerDidCancel:(TICImagePickerController *)picker;
+- (void)imagePickerControllerDidCancel:(TICImagePickerController *)picker;
 
 
 /**
@@ -130,7 +130,7 @@
  *  @return `YES` if the asset should be shown or `NO` if it should not.
  */
 
-- (BOOL)assetsPickerController:(TICImagePickerController *)picker shouldShowAsset:(PHAsset *)asset;
+- (BOOL)imagePickerController:(TICImagePickerController *)picker shouldShowAsset:(PHAsset *)asset;
 
 
 /**
@@ -146,7 +146,7 @@
  *  @return `YES` if the asset should be selected or `NO` if it should not.
  *
  */
-- (BOOL)assetsPickerController:(TICImagePickerController *)picker shouldSelectAsset:(PHAsset *)asset;
+- (BOOL)imagePickerController:(TICImagePickerController *)picker shouldSelectAsset:(PHAsset *)asset;
 
 /**
  *  Tells the delegate that the asset was selected.
@@ -155,7 +155,7 @@
  *  @param indexPath The asset that was selected.
  *
  */
-- (void)assetsPickerController:(TICImagePickerController *)picker didSelectAsset:(PHAsset *)asset;
+- (void)imagePickerController:(TICImagePickerController *)picker didSelectAsset:(PHAsset *)asset;
 
 /**
  *  Asks the delegate if the specified asset should be deselected.
@@ -166,7 +166,7 @@
  *  @return `YES` if the asset should be deselected or `NO` if it should not.
  *
  */
-- (BOOL)assetsPickerController:(TICImagePickerController *)picker shouldDeselectAsset:(PHAsset *)asset;
+- (BOOL)imagePickerController:(TICImagePickerController *)picker shouldDeselectAsset:(PHAsset *)asset;
 
 /**
  *  Tells the delegate that the item at the specified path was deselected.
@@ -175,7 +175,7 @@
  *  @param indexPath The asset that was deselected.
  *
  */
-- (void)assetsPickerController:(TICImagePickerController *)picker didDeselectAsset:(PHAsset *)asset;
+- (void)imagePickerController:(TICImagePickerController *)picker didDeselectAsset:(PHAsset *)asset;
 
 /**
  *  Tells the delegate that the UIImagePickerController did finish picking media. If the delegate
@@ -186,7 +186,7 @@
  *  @param infoDictionary the info dictionary containing the info about the image taken.
  *
  */
-- (void)assetsPickerController:(TICImagePickerController *)picker
+- (void)imagePickerController:(TICImagePickerController *)picker
                    imagePicker:(UIImagePickerController *)imagePickerController
  didFinishPickingMediaWithInfo:(NSDictionary *)infoDictionary;
 
@@ -197,7 +197,7 @@
  *  @param cell The cell that was tapped.
  *
  */
-- (void)assetsPickerController:(TICImagePickerController *)picker
+- (void)imagePickerController:(TICImagePickerController *)picker
               didTapCameraCell:(TICCameraGridViewCell *)cell;
 
 @end
