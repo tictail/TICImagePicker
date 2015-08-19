@@ -506,8 +506,12 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
       } else {
         dispatch_async(dispatch_get_main_queue(), ^{
           PHAsset *asset = [PHAsset fetchAssetsWithLocalIdentifiers:@[placeholderLocalIdentifier] options:nil].firstObject;
+          if (!asset) return;
+          
           BOOL didSelectIndexPath = NO;
           for (NSIndexPath *indexPath in self.collectionView.indexPathsForVisibleItems) {
+            if (![self isAssetIndexPath:indexPath]) continue;
+            
             if ([[self assetAtIndexPath:indexPath] isEqual:asset]) {
               [self selectAssetAtIndexPath:indexPath];
               didSelectIndexPath = YES;
