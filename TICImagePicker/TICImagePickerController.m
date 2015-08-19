@@ -102,10 +102,9 @@ TICAlbumsViewController
   self.childNavigationController = [[UINavigationController alloc] initWithRootViewController:self.imageGridViewController];
   self.childNavigationController.delegate = self;
   
-  [self.childNavigationController willMoveToParentViewController:self];
+  [self addChildViewController:self.childNavigationController];
   [self.childNavigationController.view setFrame:self.view.frame];
   [self.view addSubview:self.childNavigationController.view];
-  [self addChildViewController:self.childNavigationController];
   [self.childNavigationController didMoveToParentViewController:self];
   
   [self setupNavigationItem:self.imageGridViewController.navigationItem];
