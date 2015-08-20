@@ -80,8 +80,6 @@
 @property (nonatomic) CGFloat minimumInteritemSpacing, minimumLineSpacing;
 
 
-@property (nonatomic, strong) UINavigationController *childNavigationController;
-
 /**
  *  Managing Asset Selection
  */

@@ -41,7 +41,9 @@
   TICImagePickerController *imagePickerController = [TICImagePickerController new];
   self.imagePickerController = imagePickerController;
   imagePickerController.delegate = self;
-  [self presentViewController:imagePickerController animated:YES completion:nil];
+  
+  UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePickerController];
+  [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)imagePickerControllerDidCancel:(TICImagePickerController *)picker {

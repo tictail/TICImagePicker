@@ -69,7 +69,7 @@ TICAlbumsViewController
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  [self setupChildNavigationController];
+  [self addImageGridViewController];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -98,21 +98,13 @@ TICAlbumsViewController
 #pragma mark -
 #pragma mark - Setup Navigation Controller
 
-- (void)setupChildNavigationController {
-  self.childNavigationController = [[UINavigationController alloc] initWithRootViewController:self.imageGridViewController];
-  self.childNavigationController.delegate = self;
+- (void)addImageGridViewController {  
+  [self addChildViewController:self.imageGridViewController];
+  [self.imageGridViewController.view setFrame:self.view.frame];
+  [self.view addSubview:self.imageGridViewController.view];
+  [self.imageGridViewController didMoveToParentViewController:self];
   
-  // Needed due to containment and nested view controller
-  // eg when the grid is contained in a UITabBarController (eventhough the tab bar is hidden)
-  // See: http://stackoverflow.com/a/19479019/254422
-  self.imageGridViewController.automaticallyAdjustsScrollViewInsets = NO;
-  
-  [self addChildViewController:self.childNavigationController];
-  [self.childNavigationController.view setFrame:self.view.frame];
-  [self.view addSubview:self.childNavigationController.view];
-  [self.childNavigationController didMoveToParentViewController:self];
-  
-  [self setupNavigationItem:self.imageGridViewController.navigationItem];
+  [self setupNavigationItem:self.navigationItem];
 }
 
 - (void)setupAssetsGridViewController {
@@ -156,18 +148,21 @@ TICAlbumsViewController
 }
 
 - (void)toggleAlbumsPicker {
-  UIPopoverPresentationController *popover = [self.albumsViewController popoverPresentationController];
-  popover.delegate = self;
-  
-  UIView *sourceView = self.imageGridViewController.navigationItem.titleView;
-  popover.sourceView = sourceView;
-  popover.sourceRect = sourceView.bounds;
-  popover.popoverLayoutMargins = UIEdgeInsetsMake(0, 20, 20, 20); // No-op but in case they fix it
-  popover.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
-  if (self.presentedViewController == self.albumsViewController) {
-    [self dismissViewControllerAnimated:YES completion:nil];
-  } else {
-    [self presentViewController:self.albumsViewController animated:YES completion:nil];
+  UIView *sourceView = self.navigationItem.titleView;
+  // Perhaps we're presented without a navigation controller?
+  if (sourceView) {
+    UIPopoverPresentationController *popover = [self.albumsViewController popoverPresentationController];
+    popover.delegate = self;
+    
+    popover.sourceView = sourceView;
+    popover.sourceRect = sourceView.bounds;
+    popover.popoverLayoutMargins = UIEdgeInsetsMake(0, 20, 20, 20); // No-op but in case they fix it
+    popover.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
+    if (self.presentedViewController == self.albumsViewController) {
+      [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+      [self presentViewController:self.albumsViewController animated:YES completion:nil];
+    }
   }
 }
 
