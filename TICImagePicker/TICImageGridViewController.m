@@ -232,8 +232,14 @@ static CGSize AssetGridThumbnailSize;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   if ([self isAssetIndexPath:indexPath]) {
-    [self selectAssetAtIndexPath:indexPath];
+    // Could already be selected if allowsMultipleSelection = NO
+    if ([self.picker.selectedAssets containsObject:[self assetAtIndexPath:indexPath]]) {
+      [self deselectAssetAtIndexPath:indexPath];
+    } else {
+      [self selectAssetAtIndexPath:indexPath];
+    }
   } else {
+    
     [collectionView deselectItemAtIndexPath:indexPath animated:NO];
     
     if ([self.picker.delegate respondsToSelector:@selector(imagePickerController:didTapCameraCell:)]) {
@@ -258,14 +264,7 @@ static CGSize AssetGridThumbnailSize;
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
   if ([self isAssetIndexPath:indexPath]) {
-      PHAsset *asset = [self assetAtIndexPath:indexPath];
-    if (collectionView.allowsMultipleSelection) {
-
-      [self.picker deselectAsset:asset];
-    }
-    if ([self.picker.delegate respondsToSelector:@selector(imagePickerController:didDeselectAsset:)]) {
-      [self.picker.delegate imagePickerController:self.picker didDeselectAsset:asset];
-    }
+    [self deselectAssetAtIndexPath:indexPath];
   }
 }
 
@@ -279,6 +278,16 @@ static CGSize AssetGridThumbnailSize;
     [self.picker.delegate imagePickerController:self.picker didSelectAsset:asset];
   }
 }
+
+- (void)deselectAssetAtIndexPath:(NSIndexPath *)indexPath {
+  PHAsset *asset = [self assetAtIndexPath:indexPath];
+  [self.picker deselectAsset:asset];
+  if ([self.picker.delegate respondsToSelector:@selector(imagePickerController:didDeselectAsset:)]) {
+    [self.picker.delegate imagePickerController:self.picker didDeselectAsset:asset];
+  }
+  [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
+}
+
 
 #pragma mark - willDisplayCell:/didEndDisplayingCell:
 
