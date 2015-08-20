@@ -102,6 +102,11 @@ TICAlbumsViewController
   self.childNavigationController = [[UINavigationController alloc] initWithRootViewController:self.imageGridViewController];
   self.childNavigationController.delegate = self;
   
+  // Needed due to containment and nested view controller
+  // eg when the grid is contained in a UITabBarController (eventhough the tab bar is hidden)
+  // See: http://stackoverflow.com/a/19479019/254422
+  self.imageGridViewController.automaticallyAdjustsScrollViewInsets = NO;
+  
   [self addChildViewController:self.childNavigationController];
   [self.childNavigationController.view setFrame:self.view.frame];
   [self.view addSubview:self.childNavigationController.view];
