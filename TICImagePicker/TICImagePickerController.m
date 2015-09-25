@@ -32,8 +32,8 @@ TICAlbumsViewController
 
 @implementation TICImagePickerController
 
-- (id)init {
-  if (self = [super init]) {
+- (instancetype)init {
+  if (self = [super initWithNibName:nil bundle:nil]) {
     _selectedAssets = [[NSMutableArray alloc] init];
 
     //Default values:
@@ -52,6 +52,15 @@ TICAlbumsViewController
     _assetsFetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %@", @(PHAssetMediaTypeImage)];
   }
   return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+  self = [self init];
+  return self;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+  return [self init];
 }
 
 - (void)dealloc{

@@ -21,6 +21,8 @@
  */
 @interface TICImagePickerController : UIViewController
 
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
+
 /**
  *  The assets picker’s delegate object.
  */
