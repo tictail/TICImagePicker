@@ -296,7 +296,7 @@ TICAlbumsViewController
 }
 
 - (void)updateDoneButton {
-  self.imageGridViewController.navigationItem.rightBarButtonItem.enabled = (self.selectedAssets.count > 0);
+  self.navigationItem.rightBarButtonItem.enabled = (self.selectedAssets.count > 0);
 }
 
 
@@ -309,7 +309,7 @@ TICAlbumsViewController
 
 - (void)updateToolbar {
   self.titleButtonItem.title = [self toolbarTitle];
-  [self.imageGridViewController.navigationController setToolbarHidden:(self.selectedAssets.count == 0) animated:YES];
+  [self.navigationController setToolbarHidden:(self.selectedAssets.count == 0) animated:YES];
 }
 
 - (NSString *)toolbarTitle {
