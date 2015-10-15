@@ -528,6 +528,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
             }
           }
           if (![self.picker.selectedAssets containsObject:asset] && !didSelectIndexPath) {
+            if ([self.picker.delegate respondsToSelector:@selector(imagePickerController:didSelectAsset:)]) {
+              [self.picker.delegate imagePickerController:self.picker didSelectAsset:asset];
+            }
             [self.picker selectAsset:asset];
           }
         });
