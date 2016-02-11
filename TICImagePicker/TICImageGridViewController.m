@@ -184,18 +184,15 @@ static CGSize AssetGridThumbnailSize;
     TICImageGridViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([TICImageGridViewCell class])
                                                                            forIndexPath:indexPath];
     
-    // Increment the cell's tag
-    NSInteger currentTag = cell.tag + 1;
-    cell.tag = currentTag;
-    
     PHAsset *asset = [self assetAtIndexPath:indexPath];
+    cell.assetIdentifier = asset.localIdentifier;
     [self.imageManager requestImageForAsset:asset
                                  targetSize:AssetGridThumbnailSize
                                 contentMode:PHImageContentModeAspectFill
                                     options:nil
                               resultHandler:^(UIImage *result, NSDictionary *info) {
                                 // Only update the thumbnail if the cell tag hasn't changed. Otherwise, the cell has been re-used.
-                                if (cell.tag == currentTag) {
+                                if ([cell.assetIdentifier isEqualToString:asset.localIdentifier] && result) {
                                   [cell.imageView setImage:result];
                                 }
                               }];
@@ -327,68 +324,66 @@ static CGSize AssetGridThumbnailSize;
 
 - (void)photoLibraryDidChange:(PHChange *)changeInstance {
   // Call might come on any background queue. Re-dispatch to the main queue to handle it.
+  PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.assetsFetchResults];
+  if (nil == collectionChanges) {
+    return;
+  }
+
   dispatch_async(dispatch_get_main_queue(), ^{
+    // get the new fetch result
+    self.assetsFetchResults = [collectionChanges fetchResultAfterChanges];
     
-    // check if there are changes to the assets (insertions, deletions, updates)
-    PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.assetsFetchResults];
-    if (collectionChanges) {
+    UICollectionView *collectionView = self.collectionView;
+    
+    if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves]) {
+      // we need to reload all if the incremental diffs are not available
+      [collectionView reloadData];
+    } else {
+      // if we have incremental diffs, tell the collection view to animate insertions and deletions
+      NSUInteger itemOffset = [self shouldShowCameraCell] ? 1 : 0;
       
-      // get the new fetch result
-      self.assetsFetchResults = [collectionChanges fetchResultAfterChanges];
+      NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
+      NSArray *removedPaths = [removedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset];
       
-      UICollectionView *collectionView = self.collectionView;
+      NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
+      NSArray *insertedPaths = [insertedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset];
       
-      if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves]) {
-        // we need to reload all if the incremental diffs are not available
-        [collectionView reloadData];
-      } else {
-        // if we have incremental diffs, tell the collection view to animate insertions and deletions
-        NSUInteger itemOffset = [self shouldShowCameraCell] ? 1 : 0;
-        
-        NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
-        NSArray *removedPaths = [removedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset];
-        
-        NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
-        NSArray *insertedPaths = [insertedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset];
-        
-        NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
-        NSArray *changedPaths = [changedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset];
-        
-        BOOL shouldReload = NO;
-        
-        if (changedPaths.count && removedPaths.count) {
-          for (NSIndexPath *changedPath in changedPaths) {
-            if ([removedPaths containsObject:changedPath]) {
-              shouldReload = YES;
-              break;
-            }
+      NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
+      NSArray *changedPaths = [changedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset];
+      
+      BOOL shouldReload = NO;
+      
+      if (changedPaths.count && removedPaths.count) {
+        for (NSIndexPath *changedPath in changedPaths) {
+          if ([removedPaths containsObject:changedPath]) {
+            shouldReload = YES;
+            break;
           }
-        }
-        
-        NSIndexPath *lastRemovedIndexPath = (NSIndexPath *)removedPaths.lastObject;
-        if (lastRemovedIndexPath.item >= self.assetsFetchResults.count) {
-          shouldReload = YES;
-        }
-        
-        if (shouldReload) {
-          [collectionView reloadData];
-        } else {
-          [collectionView performBatchUpdates:^{
-            if ([removedPaths count]) {
-              [collectionView deleteItemsAtIndexPaths:removedPaths];
-            }
-            if ([insertedPaths count]) {
-              [collectionView insertItemsAtIndexPaths:insertedPaths];
-            }
-            if ([changedPaths count]) {
-              [collectionView reloadItemsAtIndexPaths:changedPaths];
-            }
-          } completion:NULL];
         }
       }
       
-      [self resetCachedAssets];
+      NSIndexPath *lastRemovedIndexPath = (NSIndexPath *)removedPaths.lastObject;
+      if (lastRemovedIndexPath.item >= self.assetsFetchResults.count) {
+        shouldReload = YES;
+      }
+      
+      if (shouldReload) {
+        [collectionView reloadData];
+      } else {
+        [collectionView performBatchUpdates:^{
+          if ([removedPaths count]) {
+            [collectionView deleteItemsAtIndexPaths:removedPaths];
+          }
+          if ([insertedPaths count]) {
+            [collectionView insertItemsAtIndexPaths:insertedPaths];
+          }
+          if ([changedPaths count]) {
+            [collectionView reloadItemsAtIndexPaths:changedPaths];
+          }
+        } completion:NULL];
+      }
     }
+    [self resetCachedAssets];
   });
 }
 
