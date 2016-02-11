@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'TICImagePicker'
-  spec.version = '1.5'
+  spec.version = '1.5.1'
   spec.summary = 'An image picker that displays the camera along with assets. Uses Photos framework (requires iOS 8).'  
   spec.license = 'MIT' 
   spec.homepage = 'https://tictail.com'
