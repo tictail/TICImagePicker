@@ -334,8 +334,9 @@ static CGSize AssetGridThumbnailSize;
     self.assetsFetchResults = [collectionChanges fetchResultAfterChanges];
     
     UICollectionView *collectionView = self.collectionView;
-    
-    if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves]) {
+
+    BOOL isActive = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
+    if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves] || !isActive) {
       // we need to reload all if the incremental diffs are not available
       [collectionView reloadData];
     } else {
