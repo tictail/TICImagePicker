@@ -352,37 +352,7 @@ static CGSize AssetGridThumbnailSize;
       NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
       NSArray *changedPaths = [changedIndexes aapl_indexPathsFromIndexesWithSection:0 itemOffset:itemOffset];
       
-      BOOL shouldReload = NO;
-      
-      if (changedPaths.count && removedPaths.count) {
-        for (NSIndexPath *changedPath in changedPaths) {
-          if ([removedPaths containsObject:changedPath]) {
-            shouldReload = YES;
-            break;
-          }
-        }
-      }
-      
-      NSIndexPath *lastRemovedIndexPath = (NSIndexPath *)removedPaths.lastObject;
-      if (lastRemovedIndexPath.item >= self.assetsFetchResults.count) {
-        shouldReload = YES;
-      }
-      
-      if (shouldReload) {
-        [collectionView reloadData];
-      } else {
-        [collectionView performBatchUpdates:^{
-          if ([removedPaths count]) {
-            [collectionView deleteItemsAtIndexPaths:removedPaths];
-          }
-          if ([insertedPaths count]) {
-            [collectionView insertItemsAtIndexPaths:insertedPaths];
-          }
-          if ([changedPaths count]) {
-            [collectionView reloadItemsAtIndexPaths:changedPaths];
-          }
-        } completion:NULL];
-      }
+      [self.collectionView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.collectionView.numberOfSections)]];
     }
     [self resetCachedAssets];
   });
